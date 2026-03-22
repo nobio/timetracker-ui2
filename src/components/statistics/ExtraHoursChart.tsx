@@ -176,10 +176,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                             <Tooltip
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                                 cursor={{ stroke: '#F1F5F9', strokeWidth: 2 }}
-                                formatter={(value: number | undefined) => {
-                                    const display = value == null ? '—' : Math.round(value * 10) / 10;
-                                    return [display, 'Overtime'];
-                                }}
+                                formatter={(value) => [Number(Math.round(Number(value) * 10) / 10), 'Overtime']}
                             />
                             <Bar
                                 dataKey="extra_hour"
@@ -214,10 +211,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                             <Tooltip
                                 contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                                 cursor={{ stroke: '#F1F5F9', strokeWidth: 2 }}
-                                formatter={(value: number | undefined) => {
-                                    const display = value == null ? '—' : Math.round(value * 10) / 10;
-                                    return [display, 'Overtime Balance'];
-                                }}
+                                formatter={(value) => [Number(value ?? 0), 'Overtime Balance']}
                             />
                             <Area
                                 type="monotone"

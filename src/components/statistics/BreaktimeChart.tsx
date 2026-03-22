@@ -95,7 +95,7 @@ export function BreaktimeChart({ intervalMinute = 10 }: BreaktimeChartProps) {
                             contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                             cursor={{ fill: '#F1F5F9' }}
                             labelFormatter={(label) => `Duration: ${label} mins`}
-                            formatter={(value: number | undefined) => [value || 0, 'Occurrences']}
+                            formatter={(value) => [Number(value ?? 0), 'Occurrences']}
                         />
                         <Bar
                             dataKey="breakTime"
