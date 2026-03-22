@@ -22,7 +22,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            nobio/timetrackerui2
+            nobio/timetracker-ui2
           tags: |
             type=schedule
             type=ref,event=branch
@@ -47,4 +47,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/timetracker-ui2:latest
+            ${{ secrets.DOCKER_USERNAME }}/timetracker-ui2:latest
