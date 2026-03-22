@@ -1,4 +1,4 @@
-name: Build Docker Image
+name: Build Docker Image for TimeTracker UI2
 
 
 on:
@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [v24.x]  # Node.js versions to test against
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
