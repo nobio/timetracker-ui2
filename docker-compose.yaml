@@ -1,0 +1,14 @@
+services:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # timetracker-ui - the frontend
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  timetracker-ui:
+    container_name: timetracker-ui2
+    restart: always
+    build: .
+    image: nobio/timetracker-ui2:latest
+    env_file:
+      - path: .env
+        required: true
+    ports:
+      - "30500:3000"
