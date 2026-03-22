@@ -45,6 +45,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ${{ secrets.DOCKER_USERNAME }}/timetracker-ui2:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/timetracker-ui2:latest
