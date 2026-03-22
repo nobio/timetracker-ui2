@@ -22,7 +22,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            nobio/timetracker
+            nobio/timetrackerui2
           tags: |
             type=schedule
             type=ref,event=branch
