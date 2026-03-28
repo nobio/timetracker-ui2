@@ -21,8 +21,8 @@ interface ExtraHoursChartProps {
     timeUnit: "day" | "week" | "month" | "year";
     accumulate: boolean;
     selectedDate: Date;
-        showLastPeriod: boolean;
-        setShowLastPeriod: (val: boolean) => void;
+    showLastPeriod: boolean;
+    setShowLastPeriod: (val: boolean) => void;
 }
 
 interface ExtraHourData {

@@ -13,10 +13,10 @@ type TimeUnit = "day" | "week" | "month" | "year";
 export default function StatisticsPage() {
     // windowAnchorDate is the anchor for the current time window (start of month/year/week/day)
     const [windowAnchorDate, setWindowAnchorDate] = useState<Date>(new Date());
-    const [timeUnit, setTimeUnit] = useState<TimeUnit>("month");
+    const [timeUnit, setTimeUnit] = useState<TimeUnit>("week");
     const [accumulate, setAccumulate] = useState(false);
     const [activeTab, setActiveTab] = useState<"aggregate" | "breaktime" | "come-go" | "extrahours">("extrahours");
-    const [showLastPeriod, setShowLastPeriod] = useState(false);
+    const [showLastPeriod, setShowLastPeriod] = useState(true);
 
     // Move the windowAnchorDate by the time unit
     const handleDateChange = (direction: "prev" | "next") => {
