@@ -11,6 +11,7 @@ RUN npm ci
 COPY . .
 
 # Build Next.js app
+COPY .env .env
 RUN npm run build
 
 # Production image
