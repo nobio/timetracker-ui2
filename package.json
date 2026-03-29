@@ -6,7 +6,7 @@
     "dev": "next dev",
     "start:dev": "next dev",
     "build": "next build",
-    "start": "node .next/standalone/server.js",
+    "start": "next start",
     "test": "playwright test --headed",
     "lint": "eslints",
     "clean": "rm -rf .next node_modules test-results coverage playwright-report ./*.png"
