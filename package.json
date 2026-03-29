@@ -6,11 +6,10 @@
     "dev": "next dev",
     "start:dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node .next/standalone/server.js",
     "test": "playwright test --headed",
     "lint": "eslints",
-    "clean": "rm -rf .next node_modules test-results coverage playwright-report ./*.png",
-    "tabularasa": "rm -rf node_modules & npm run clean && npm install && npm run build"
+    "clean": "rm -rf .next node_modules test-results coverage playwright-report ./*.png"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.21",
