@@ -11,6 +11,8 @@ services:
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     image: nobio/timetracker-ui2:latest
+    environment:
+      - NODE_ENV=production
     env_file:
       - path: .env
         required: true
