@@ -11,4 +11,4 @@ services:
       - path: .env
         required: true
     ports:
-      - "30500:3000"
+      - "3000:3000"
