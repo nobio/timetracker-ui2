@@ -5,7 +5,11 @@ services:
   timetracker-ui:
     container_name: timetracker-ui2
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     image: nobio/timetracker-ui2:latest
     env_file:
       - path: .env

@@ -9,7 +9,8 @@
     "start": "next start",
     "test": "playwright test --headed",
     "lint": "eslints",
-    "clean": "rm -rf .next node_modules test-results coverage playwright-report ./*.png"
+    "clean": "rm -rf .next node_modules test-results coverage playwright-report ./*.png",
+    "tabularasa": "rm -rf node_modules & npm run clean && npm install && npm run build"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.21",

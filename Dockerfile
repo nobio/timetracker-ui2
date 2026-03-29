@@ -33,4 +33,4 @@ RUN npm prune --omit=dev
 
 EXPOSE 3000
 
-CMD ["npx", "next", "start"]
+CMD ["npm", "start"]
