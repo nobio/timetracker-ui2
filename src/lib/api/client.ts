@@ -8,6 +8,7 @@ export const apiClient = createClient<paths>({
 // Helper to inject bearer token before each request
 apiClient.use({
   onRequest: async ({ request }) => {
+    console.log(`onRequest: NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL}*`);
     // Check local storage for token if we are on client side
 
     if (typeof window !== "undefined") {
@@ -20,7 +21,7 @@ apiClient.use({
   },
   onResponse: async ({ request, response }) => {
     // If unauthorized, try to refresh token and retry
-    console.log(`NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL}*`);
+    console.log(`onResponse: NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL}*`);
     if (response.status === 401 && typeof window !== "undefined") {
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
