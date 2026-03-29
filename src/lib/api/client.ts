@@ -20,6 +20,7 @@ apiClient.use({
   },
   onResponse: async ({ request, response }) => {
     // If unauthorized, try to refresh token and retry
+    console.log(`NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL}*`);
     if (response.status === 401 && typeof window !== "undefined") {
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
