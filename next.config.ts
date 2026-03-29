@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   //basePath: '/timetracker',
   //assetPrefix: '/timetracker/',
-  //output: 'standalone',
+  output: 'standalone',
   allowedDevOrigins: ['localhost:3000', '127.0.0.1'],
   async headers() {
     return [
