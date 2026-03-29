@@ -11,12 +11,13 @@ RUN npm ci
 COPY . .
 
 # Build Next.js app
-COPY .env .env
 RUN npm run build
 
-# Production image
+# ---------- Production Runner ----------
 FROM node:25-alpine AS runner
 WORKDIR /app
+#ENV NODE_ENV=production
+#RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
 
 # Install only production dependencies
 COPY package.json package-lock.json ./
