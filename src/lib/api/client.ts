@@ -8,7 +8,6 @@ export const apiClient = createClient<paths>({
 // Helper to inject bearer token before each request
 apiClient.use({
   onRequest: async ({ request }) => {
-    console.log(`onRequest: NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL}*`);
     // Check local storage for token if we are on client side
 
     if (typeof window !== "undefined") {
