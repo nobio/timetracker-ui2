@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
-import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X } from "lucide-react";
+import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const MapComponent = dynamic(() => import("@/components/Map"), {
@@ -30,7 +30,7 @@ export default function DashboardPage() {
     const [editFormTime, setEditFormTime] = useState<string>("00:00");
     const [showMapModal, setShowMapModal] = useState(false);
 
-    const { data: allEntries, isLoading: isLoadingEntries, error: entriesError } = useQuery({
+    const { data: allEntries, isLoading: isLoadingEntries, isFetching: isFetchingEntries, error: entriesError, refetch: refetchEntries } = useQuery({
         queryKey: ["entries"],
         queryFn: async () => {
             const { data, error } = await apiClient.GET("/entries");
@@ -39,7 +39,7 @@ export default function DashboardPage() {
         },
     });
 
-    const { data: busyStats, isLoading: isLoadingStats } = useQuery({
+    const { data: busyStats, isLoading: isLoadingStats, isFetching: isFetchingStats, refetch: refetchStats } = useQuery({
         queryKey: ["entries", format(selectedDate, "yyyy-MM-dd"), "busy"],
         queryFn: async () => {
             const { data, error } = await apiClient.GET("/entries", {
@@ -207,6 +207,18 @@ export default function DashboardPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-2xl font-bold text-slate-800">Time Entries</h1>
                 <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <button
+                        onClick={() => {
+                            refetchEntries();
+                            refetchStats();
+                        }}
+                        disabled={isFetchingEntries || isFetchingStats}
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm disabled:opacity-50"
+                        title="Reload data"
+                    >
+                        <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
+                        <span className="hidden sm:inline">Reload</span>
+                    </button>
                     <button
                         onClick={() => setShowMapModal(true)}
                         disabled={!hasLocation}
