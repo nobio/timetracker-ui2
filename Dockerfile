@@ -1,43 +1,43 @@
-# Simple Dockerfile for Next.js app (minimal runtime image)
-FROM node:25-alpine AS builder
-
+# Stage 1: Install dependencies
+FROM node:25-alpine AS deps
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install dependencies
 COPY package.json package-lock.json ./
 RUN npm ci
 
-# Copy only necessary files for build
+# Stage 2: Build the application
+FROM node:25-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Build Next.js app
+# Set environment variables for the build
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+
 RUN npm run build
 
-# ---------- Production Runner ----------
+# Stage 3: Production runner
 FROM node:25-alpine AS runner
 WORKDIR /app
+
 ENV NODE_ENV=production
-#RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
 
-# Install only production dependencies
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force;
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# Copy built app and static assets (no node_modules, no source)
-COPY --from=builder /app/.next ./.next
+# Copy static assets and standalone folder
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-#COPY --from=builder /app/.next ./_next
-
-#COPY --from=builder /app/.next/standalone ./
-#COPY --from=builder /app/.next/static ./.next/static
-#COPY --from=builder /app/public ./public
-#COPY --from=builder /app/package.json ./package.json
-
-# Remove any dev dependencies (extra safety)
-RUN npm prune --omit=dev
+USER nextjs
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]
+

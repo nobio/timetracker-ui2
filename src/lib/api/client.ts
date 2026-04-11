@@ -8,8 +8,7 @@ export const apiClient = createClient<paths>({
 // Helper to inject bearer token before each request
 apiClient.use({
   onRequest: async ({ request }) => {
-    // Check local storage for token if we are on client side
-
+    console.log(`[API Request] ${request.method} ${request.url}`);
     if (typeof window !== "undefined") {
       const token = localStorage.getItem("accessToken");
       if (token) {
@@ -19,12 +18,13 @@ apiClient.use({
     return request;
   },
   onResponse: async ({ request, response }) => {
-    // If unauthorized, try to refresh token and retry
-    console.log(`onResponse: NEXT_PUBLIC_API_URL=${process.env.NEXT_PUBLIC_API_URL}*`);
+    console.log(`[API Response] ${response.status} ${response.url} (Request: ${request.method} ${request.url})`);
+    
     if (response.status === 401 && typeof window !== "undefined") {
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
         // Try to refresh access token
+        console.log(`[API Auth] Attempting token refresh...`);
         const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:30000/api"}/auth/token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -33,6 +33,7 @@ apiClient.use({
         if (refreshRes.ok) {
           const data = await refreshRes.json();
           if (data.accessToken) {
+            console.log(`[API Auth] Token refresh successful.`);
             localStorage.setItem("accessToken", data.accessToken);
             // Retry original request with new access token
             request.headers.set("Authorization", `Bearer ${data.accessToken}`);
@@ -40,6 +41,7 @@ apiClient.use({
           }
         } else {
           // Refresh token invalid, clear tokens
+          console.log(`[API Auth] Token refresh failed.`);
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
         }
@@ -48,3 +50,4 @@ apiClient.use({
     return response;
   },
 });
+
