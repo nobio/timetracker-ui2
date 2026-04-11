@@ -15,6 +15,7 @@ const nextConfig = {
     }
   },
   async rewrites() {
+    console.log('NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL);
     return [
       {
         source: '/api-proxy/:path*',
