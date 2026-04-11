@@ -13,6 +13,15 @@ const nextConfig = {
       duration: true,
       hmrRefreshes: true
     }
-  }
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api-proxy/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:30000/api'}/:path*`,
+      },
+    ];
+  },
 };
+
 module.exports = nextConfig;
