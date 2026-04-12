@@ -52,11 +52,11 @@ export default function DashboardLayout({
                 </button>
             </div>
 
-            {/* Sidebar Navigation (Desktop) */}
+            {/* Sidebar Navigation */}
             <div
-                className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 sticky top-0 h-screen z-40"
+                className="hidden md:flex md:relative md:translate-x-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col min-h-screen"
             >
-                <div className="hidden md:flex p-6 border-b border-slate-200 items-center gap-3 text-blue-600 font-bold text-xl">
+                <div className="p-6 border-b border-slate-200 items-center gap-3 text-blue-600 font-bold text-xl flex">
                     <Clock className="w-8 h-8" />
                     Timetracker
                 </div>
