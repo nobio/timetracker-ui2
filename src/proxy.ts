@@ -13,8 +13,6 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-
-
 // Match all paths except static files and internal next paths
 export const config = {
   matcher: [

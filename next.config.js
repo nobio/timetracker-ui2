@@ -15,11 +15,13 @@ const nextConfig = {
     }
   },
   async rewrites() {
-    console.log('NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL);
+    const targetApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:30000/api';
+    console.log(`[Next.js Config] Proxying /api-proxy to ${targetApiUrl}`);
+    
     return [
       {
         source: '/api-proxy/:path*',
-        destination: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:30000/api'}/:path*`,
+        destination: `${targetApiUrl}/:path*`,
       },
     ];
   },

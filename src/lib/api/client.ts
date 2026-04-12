@@ -25,7 +25,8 @@ apiClient.use({
       if (refreshToken) {
         // Try to refresh access token
         console.log(`[API Auth] Attempting token refresh...`);
-        const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:30000/api"}/auth/token`, {
+        const targetApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:30000/api";
+        const refreshRes = await fetch(`${targetApiUrl}/auth/token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ token: refreshToken })
