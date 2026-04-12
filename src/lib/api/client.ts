@@ -19,13 +19,13 @@ apiClient.use({
   },
   onResponse: async ({ request, response }) => {
     console.log(`[API Response] ${response.status} ${response.url} (Request: ${request.method} ${request.url})`);
-    
+
     if (response.status === 401 && typeof window !== "undefined") {
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
         // Try to refresh access token
         console.log(`[API Auth] Attempting token refresh...`);
-        const targetApiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:30000/api";
+        const targetApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://nobio.myhome-server.de/api";
         const refreshRes = await fetch(`${targetApiUrl}/auth/token`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },

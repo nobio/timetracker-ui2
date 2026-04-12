@@ -15,9 +15,9 @@ const nextConfig = {
     }
   },
   async rewrites() {
-    const targetApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:30000/api';
+    const targetApiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://nobio.myhome-server.de/api';
     console.log(`[Next.js Config] Proxying /api-proxy to ${targetApiUrl}`);
-    
+
     return [
       {
         source: '/api-proxy/:path*',
