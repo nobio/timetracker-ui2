@@ -63,17 +63,6 @@ export default function StatisticsPage() {
 
                 {/* Global Date & Unit Controls */}
                 <div className="flex flex-wrap items-center gap-2">
-                    {showAccumulateControls && (
-                        <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm">
-                            <input
-                                type="checkbox"
-                                checked={accumulate}
-                                onChange={(e) => setAccumulate(e.target.checked)}
-                                className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
-                            />
-                            Accumulate
-                        </label>
-                    )}
 
                     {showCalendarControls && (
                         <div className="flex items-center bg-white rounded-lg shadow-sm border border-slate-200">
@@ -168,6 +157,7 @@ export default function StatisticsPage() {
                         selectedDate={windowAnchorDate}
                         showLastPeriod={showLastPeriod}
                         setShowLastPeriod={setShowLastPeriod}
+                        setAccumulate={setAccumulate}
                     />
                 )}
 

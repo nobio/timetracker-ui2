@@ -23,6 +23,7 @@ interface ExtraHoursChartProps {
     selectedDate: Date;
     showLastPeriod: boolean;
     setShowLastPeriod: (val: boolean) => void;
+    setAccumulate: (val: boolean) => void;
 }
 
 interface ExtraHourData {
@@ -33,7 +34,7 @@ interface ExtraHourData {
 
 type EffectiveTimeUnit = "day" | "week" | "month" | "year";
 
-export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPeriod, setShowLastPeriod }: ExtraHoursChartProps) {
+export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPeriod, setShowLastPeriod, setAccumulate }: ExtraHoursChartProps) {
 
     // Compute the effective timeUnit, startDate, and endDate for the API call
     const { effectiveTimeUnit, startDate, endDate } = useMemo(() => {
@@ -122,17 +123,28 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
 
     return (
         <div className="w-full space-y-6">
-            {/* Last period filter checkbox */}
-            <div className="flex items-center mb-4">
-                <input
-                    type="checkbox"
-                    id="lastPeriod"
-                    checked={showLastPeriod}
-                    onChange={e => setShowLastPeriod(e.target.checked)}
-                    className="mr-2 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                />
-                <label htmlFor="lastPeriod" className="text-sm font-medium text-slate-700">
+            {/* Controls Row: Selected Period and Accumulate */}
+            <div className="flex flex-wrap items-center gap-4 mb-6">
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50/30">
+                    <input
+                        type="checkbox"
+                        id="lastPeriod"
+                        checked={showLastPeriod}
+                        onChange={e => setShowLastPeriod(e.target.checked)}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                    />
                     Selected {timeUnit.charAt(0).toUpperCase() + timeUnit.slice(1)}
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50/30">
+                    <input
+                        type="checkbox"
+                        id="accumulate"
+                        checked={accumulate}
+                        onChange={(e) => setAccumulate(e.target.checked)}
+                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                    />
+                    Accumulate
                 </label>
             </div>
 
