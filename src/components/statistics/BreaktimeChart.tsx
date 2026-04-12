@@ -60,11 +60,11 @@ export function BreaktimeChart({ intervalMinute = 10 }: BreaktimeChartProps) {
 
     return (
         <div className="w-full space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-amber-50 p-4 rounded-lg border border-amber-100">
-                    <p className="text-sm font-medium text-amber-600 mb-1">Total Break Blocks Recorded</p>
-                    <p className="text-2xl font-bold text-slate-800">
-                        {totalBreaks} Intervals
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="bg-amber-50 p-3 rounded-lg border border-amber-100 shadow-sm">
+                    <p className="text-xs font-semibold text-amber-600 mb-0.5">Intervals Count</p>
+                    <p className="text-xl font-bold text-slate-800 tracking-tight">
+                        {totalBreaks} Items
                     </p>
                 </div>
             </div>

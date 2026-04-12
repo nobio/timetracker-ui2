@@ -78,10 +78,10 @@ export function AggregateChart({ timeUnit }: AggregateChartProps) {
 
     return (
         <div className="w-full space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                    <p className="text-sm font-medium text-blue-600 mb-1">Average Working Time</p>
-                    <p className="text-2xl font-bold text-slate-800">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="bg-blue-50 p-3 rounded-lg border border-blue-100 shadow-sm">
+                    <p className="text-xs font-semibold text-blue-600 mb-0.5">Avg Working Time</p>
+                    <p className="text-xl font-bold text-slate-800 tracking-tight">
                         {stats?.average_working_time ? `${Math.round(stats.average_working_time * 10) / 10}h` : '0h'}
                     </p>
                 </div>

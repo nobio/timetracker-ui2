@@ -148,18 +148,19 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                 </label>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className={`p-4 rounded-lg border ${isPositiveBalance ? "bg-emerald-50 border-emerald-100" : "bg-rose-50 border-rose-100"}`}>
-                    <p className={`text-sm font-medium mb-1 ${isPositiveBalance ? "text-emerald-600" : "text-rose-600"}`}>
-                        {accumulate ? "Total Accumulated Balance" : "Current Period Balance"}
+            {/* Summary Boxes */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className={`p-3 rounded-lg border shadow-sm ${isPositiveBalance ? "bg-emerald-50 border-emerald-100" : "bg-rose-50 border-rose-100"}`}>
+                    <p className={`text-xs font-semibold mb-0.5 ${isPositiveBalance ? "text-emerald-600" : "text-rose-600"}`}>
+                        {accumulate ? "Accumulated" : "Current Balance"}
                     </p>
-                    <p className="text-2xl font-bold text-slate-800">
+                    <p className="text-xl font-bold text-slate-800 tracking-tight">
                         {finalBalance > 0 ? "+" : ""}{Math.round(finalBalance * 10) / 10}h
                     </p>
                 </div>
-                <div className="p-4 rounded-lg border bg-orange-50 border-slate-200">
-                    <p className="text-sm font-medium mb-1 text-slate-600">Total Extra Hours</p>
-                    <p className="text-2xl font-bold text-slate-800">
+                <div className="p-3 rounded-lg border bg-orange-50 border-orange-100 shadow-sm">
+                    <p className="text-xs font-semibold mb-0.5 text-orange-600">Total Extra</p>
+                    <p className="text-xl font-bold text-slate-800 tracking-tight">
                         {Math.round(totalExtraHours * 10) / 10}h
                     </p>
                 </div>
