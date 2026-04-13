@@ -1,4 +1,6 @@
-const nextConfig = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   /* config options here */
   basePath: '/timetracker',
   assetPrefix: '/timetracker',
@@ -8,9 +10,6 @@ const nextConfig = {
   logging: {
     fetches: {
       fullUrl: true,
-      method: true,
-      status: true,
-      duration: true,
       hmrRefreshes: true
     }
   },
@@ -27,4 +26,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
