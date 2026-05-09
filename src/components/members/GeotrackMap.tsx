@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo } from "react";
-import { MapContainer, TileLayer, Circle, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Circle, Popup, useMap, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { components } from "@/lib/api/schema";
 import { format } from "date-fns";
@@ -77,6 +77,11 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
                 />
                 <FitBounds data={validData} />
                 
+                <Polyline 
+                    positions={validData.map(loc => [loc.latitude!, loc.longitude!] as [number, number])} 
+                    pathOptions={{ color: '#64748b', weight: 2, opacity: 0.6 }}
+                />
+
                 {validData.map((loc, idx) => {
                     const color = getColorForVelocity(loc.velocity);
                     // Use a small fixed radius if accuracy is disabled or missing
