@@ -50,7 +50,7 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
             const ratio = (v - minVelocity) / (maxVelocity - minVelocity);
             hue = 120 - (ratio * 120);
         }
-        return `hsl(${hue}, 80%, 45%)`;
+        return `hsl(${hue}, 70%, 45%)`;
     };
 
     if (validData.length === 0) {
@@ -67,7 +67,7 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
         <div style={{ height: "500px", width: "100%", position: "relative" }} className="rounded-xl overflow-hidden border border-slate-200">
             <MapContainer
                 center={defaultCenter}
-                zoom={13}
+                zoom={1}
                 style={{ height: "100%", width: "100%", zIndex: 0 }}
                 scrollWheelZoom={true}
             >
@@ -76,19 +76,19 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <FitBounds data={validData} />
-                
-                <Polyline 
-                    positions={validData.map(loc => [loc.latitude!, loc.longitude!] as [number, number])} 
-                    pathOptions={{ color: '#64748b', weight: 2, opacity: 0.6 }}
+
+                <Polyline
+                    positions={validData.map(loc => [loc.latitude!, loc.longitude!] as [number, number])}
+                    pathOptions={{ color: '#000000ff', weight: 3, opacity: 0.8 }}
                 />
 
                 {validData.map((loc, idx) => {
                     const color = getColorForVelocity(loc.velocity);
                     // Use a small fixed radius if accuracy is disabled or missing
-                    const radius = (showAccuracy && loc.accuracy) ? loc.accuracy : 5;
+                    const radius = (showAccuracy && loc.accuracy) ? loc.accuracy : 8;
                     // Circle stroke and fill color
                     const pathOptions = { color: color, fillColor: color, fillOpacity: 0.4, weight: 2 };
-                    
+
                     return (
                         <Circle
                             key={`${idx}-${loc.latitude}-${loc.longitude}`}
