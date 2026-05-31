@@ -23,7 +23,7 @@ type TimeUnit = "day" | "week" | "month" | "year";
 export default function GeotrackTab() {
     const [windowAnchorDate, setWindowAnchorDate] = useState<Date>(new Date());
     const [timeUnit, setTimeUnit] = useState<TimeUnit>("day");
-    const [showAccuracy, setShowAccuracy] = useState(true);
+    const [showAccuracy, setShowAccuracy] = useState(false);
 
     const handleDateChange = (direction: "prev" | "next") => {
         setWindowAnchorDate(current => {
@@ -112,8 +112,8 @@ export default function GeotrackTab() {
                 <div className="flex flex-wrap items-center gap-3">
                     <button
                         onClick={() => setShowAccuracy(!showAccuracy)}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${showAccuracy 
-                            ? 'bg-blue-50 border-blue-200 text-blue-700' 
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${showAccuracy
+                            ? 'bg-blue-50 border-blue-200 text-blue-700'
                             : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
                     >
                         <Crosshair className="w-4 h-4" />
@@ -174,7 +174,7 @@ export default function GeotrackTab() {
                 )}
                 <GeotrackMap data={data || []} showAccuracy={showAccuracy} />
             </div>
-            
+
             <div className="text-sm text-slate-500 text-center">
                 Displaying {data?.length || 0} tracking points for this period.
             </div>
