@@ -129,7 +129,7 @@ export default function UsersTab() {
     return (
         <div className="space-y-4">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-slate-800">User Management</h2>
+                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">User Management</h2>
                 <button
                     onClick={() => {
                         resetForm();
@@ -142,22 +142,22 @@ export default function UsersTab() {
                 </button>
             </div>
 
-            <div className="overflow-x-auto rounded-lg border border-slate-200">
-                <table className="min-w-full divide-y divide-slate-200">
-                    <thead className="bg-slate-50">
+            <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
+                <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+                    <thead className="bg-slate-50 dark:bg-slate-800/50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Username</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Name</th>
-                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Email</th>
-                            <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Username</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Name</th>
+                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Email</th>
+                            <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-slate-200">
+                    <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800">
                         {Array.isArray(users) && users.map((user) => (
-                            <tr key={user.id} className="hover:bg-slate-50 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800">{user.username}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{user.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{user.mailAddress}</td>
+                            <tr key={user.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-800 dark:text-slate-200">{user.username}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">{user.name}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">{user.mailAddress}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div className="flex items-center justify-end gap-2">
                                         <button
@@ -165,7 +165,7 @@ export default function UsersTab() {
                                                 setFormData({ username: user.username || "", name: user.name || "", mailAddress: user.mailAddress || "", password: "" });
                                                 setUserToEdit(user);
                                             }}
-                                            className="text-slate-400 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50 transition-colors"
+                                            className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                                             title="Edit User"
                                         >
                                             <Pencil className="w-4 h-4" />
@@ -175,14 +175,14 @@ export default function UsersTab() {
                                                 setFormData({ ...formData, password: "" });
                                                 setUserToPassword(user);
                                             }}
-                                            className="text-slate-400 hover:text-amber-600 p-2 rounded-full hover:bg-amber-50 transition-colors"
+                                            className="text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 p-2 rounded-full hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-colors"
                                             title="Set Password"
                                         >
                                             <KeyRound className="w-4 h-4" />
                                         </button>
                                         <button
                                             onClick={() => setUserToDelete(user)}
-                                            className="text-slate-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50 transition-colors"
+                                            className="text-slate-400 hover:text-red-600 dark:hover:text-red-400 p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
                                             title="Delete User"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -193,7 +193,7 @@ export default function UsersTab() {
                         ))}
                         {(!Array.isArray(users) || users.length === 0) && (
                             <tr>
-                                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">
+                                <td colSpan={4} className="px-6 py-8 text-center text-slate-500 dark:text-slate-400">
                                     No users found.
                                 </td>
                             </tr>
@@ -205,34 +205,34 @@ export default function UsersTab() {
             {/* Create User Modal */}
             {isCreateModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-center p-4 border-b border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800">Create New User</h3>
-                            <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-slate-700">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-800">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Create New User</h3>
+                            <button onClick={() => setIsCreateModalOpen(false)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleCreateSubmit}>
                             <div className="p-4 space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
-                                    <input type="text" required value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Username</label>
+                                    <input type="text" required value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
-                                    <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
+                                    <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                                    <input type="email" required value={formData.mailAddress} onChange={e => setFormData({ ...formData, mailAddress: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+                                    <input type="email" required value={formData.mailAddress} onChange={e => setFormData({ ...formData, mailAddress: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
-                                    <input type="password" required minLength={5} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Password</label>
+                                    <input type="password" required minLength={5} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                             </div>
-                            <div className="bg-slate-50 px-4 py-3 flex justify-end gap-2 border-t border-slate-200">
-                                <button type="button" onClick={() => setIsCreateModalOpen(false)} className="px-4 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Cancel</button>
+                            <div className="bg-slate-50 dark:bg-slate-800/50 px-4 py-3 flex justify-end gap-2 border-t border-slate-200 dark:border-slate-800">
+                                <button type="button" onClick={() => setIsCreateModalOpen(false)} className="px-4 py-2 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">Cancel</button>
                                 <button type="submit" disabled={createMutation.isPending} className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2">
                                     {createMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                                     Create User
@@ -246,30 +246,30 @@ export default function UsersTab() {
             {/* Edit User Modal */}
             {userToEdit && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-center p-4 border-b border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800">Edit User</h3>
-                            <button onClick={() => setUserToEdit(null)} className="text-slate-400 hover:text-slate-700">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-800">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Edit User</h3>
+                            <button onClick={() => setUserToEdit(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handleEditSubmit}>
                             <div className="p-4 space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
-                                    <input type="text" required value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Username</label>
+                                    <input type="text" required value={formData.username} onChange={e => setFormData({ ...formData, username: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Name</label>
-                                    <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
+                                    <input type="text" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-                                    <input type="email" required value={formData.mailAddress} onChange={e => setFormData({ ...formData, mailAddress: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
+                                    <input type="email" required value={formData.mailAddress} onChange={e => setFormData({ ...formData, mailAddress: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
                                 </div>
                             </div>
-                            <div className="bg-slate-50 px-4 py-3 flex justify-end gap-2 border-t border-slate-200">
-                                <button type="button" onClick={() => setUserToEdit(null)} className="px-4 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Cancel</button>
+                            <div className="bg-slate-50 dark:bg-slate-800/50 px-4 py-3 flex justify-end gap-2 border-t border-slate-200 dark:border-slate-800">
+                                <button type="button" onClick={() => setUserToEdit(null)} className="px-4 py-2 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">Cancel</button>
                                 <button type="submit" disabled={editMutation.isPending} className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center gap-2">
                                     {editMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                                     Save Changes
@@ -283,23 +283,23 @@ export default function UsersTab() {
             {/* Set Password Modal */}
             {userToPassword && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-center p-4 border-b border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800">Set Password</h3>
-                            <button onClick={() => setUserToPassword(null)} className="text-slate-400 hover:text-slate-700">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-800">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Set Password</h3>
+                            <button onClick={() => setUserToPassword(null)} className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
                         <form onSubmit={handlePasswordSubmit}>
                             <div className="p-4 space-y-4">
-                                <p className="text-sm text-slate-600">Enter a new password for <span className="font-semibold">{userToPassword.username}</span>.</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">Enter a new password for <span className="font-semibold text-slate-800 dark:text-slate-200">{userToPassword.username}</span>.</p>
                                 <div>
-                                    <label className="block text-sm font-medium text-slate-700 mb-1">New Password</label>
-                                    <input type="password" required minLength={5} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-900 focus:ring-2 focus:ring-amber-500 outline-none" />
+                                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">New Password</label>
+                                    <input type="password" required minLength={5} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none" />
                                 </div>
                             </div>
-                            <div className="bg-slate-50 px-4 py-3 flex justify-end gap-2 border-t border-slate-200">
-                                <button type="button" onClick={() => setUserToPassword(null)} className="px-4 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50">Cancel</button>
+                            <div className="bg-slate-50 dark:bg-slate-800/50 px-4 py-3 flex justify-end gap-2 border-t border-slate-200 dark:border-slate-800">
+                                <button type="button" onClick={() => setUserToPassword(null)} className="px-4 py-2 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700">Cancel</button>
                                 <button type="submit" disabled={passwordMutation.isPending} className="px-4 py-2 text-white bg-amber-600 rounded-lg hover:bg-amber-700 disabled:opacity-50 flex items-center gap-2">
                                     {passwordMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                                     Set Password
@@ -313,20 +313,20 @@ export default function UsersTab() {
             {/* Delete Confirmation Modal */}
             {userToDelete && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
                         <div className="p-6 text-center">
                             <div className="flex justify-center mb-4">
-                                <div className="bg-red-100 p-3 rounded-full text-red-600">
+                                <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full text-red-600 dark:text-red-500">
                                     <Trash2 className="w-6 h-6" />
                                 </div>
                             </div>
-                            <h3 className="text-lg font-bold text-slate-800 mb-2">Delete User</h3>
-                            <p className="text-slate-600 text-sm">
-                                Are you sure you want to delete <span className="font-semibold">{userToDelete.username}</span>? This action cannot be undone.
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Delete User</h3>
+                            <p className="text-slate-600 dark:text-slate-400 text-sm">
+                                Are you sure you want to delete <span className="font-semibold text-slate-800 dark:text-slate-200">{userToDelete.username}</span>? This action cannot be undone.
                             </p>
                         </div>
-                        <div className="bg-slate-50 px-6 py-4 flex justify-end gap-3 border-t border-slate-200">
-                            <button onClick={() => setUserToDelete(null)} disabled={deleteMutation.isPending} className="px-4 py-2 text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50">Cancel</button>
+                        <div className="bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex justify-end gap-3 border-t border-slate-200 dark:border-slate-800">
+                            <button onClick={() => setUserToDelete(null)} disabled={deleteMutation.isPending} className="px-4 py-2 text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50">Cancel</button>
                             <button onClick={() => userToDelete.id && deleteMutation.mutate(userToDelete.id)} disabled={deleteMutation.isPending} className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50 flex items-center gap-2">
                                 {deleteMutation.isPending && <Loader2 className="w-4 h-4 animate-spin" />}
                                 Delete

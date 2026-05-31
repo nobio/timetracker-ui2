@@ -94,8 +94,8 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
 
     if (isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center p-12 text-slate-500">
-                <Loader2 className="w-8 h-8 animate-spin mb-4 text-blue-500" />
+            <div className="flex flex-col items-center justify-center p-12 text-slate-500 dark:text-slate-400">
+                <Loader2 className="w-8 h-8 animate-spin mb-4 text-blue-500 dark:text-blue-400" />
                 <p>Loading Extra Hours statistics...</p>
             </div>
         );
@@ -103,7 +103,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
 
     if (error) {
         return (
-            <div className="p-4 bg-red-50 text-red-600 rounded-lg">
+            <div className="p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-lg">
                 <p>Failed to load extra hours data.</p>
             </div>
         );
@@ -125,24 +125,24 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
         <div className="w-full space-y-6">
             {/* Controls Row: Selected Period and Accumulate */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50/30">
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50/30 dark:hover:bg-blue-900/30">
                     <input
                         type="checkbox"
                         id="lastPeriod"
                         checked={showLastPeriod}
                         onChange={e => setShowLastPeriod(e.target.checked)}
-                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                        className="rounded border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 w-4 h-4 cursor-pointer"
                     />
                     Selected {timeUnit.charAt(0).toUpperCase() + timeUnit.slice(1)}
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200 shadow-sm transition-all hover:border-blue-200 hover:bg-blue-50/30">
+                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50/30 dark:hover:bg-blue-900/30">
                     <input
                         type="checkbox"
                         id="accumulate"
                         checked={accumulate}
                         onChange={(e) => setAccumulate(e.target.checked)}
-                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 w-4 h-4 cursor-pointer"
+                        className="rounded border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 w-4 h-4 cursor-pointer"
                     />
                     Accumulate
                 </label>
@@ -150,17 +150,17 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
 
             {/* Summary Boxes */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className={`p-3 rounded-lg border shadow-sm ${isPositiveBalance ? "bg-emerald-50 border-emerald-100" : "bg-rose-50 border-rose-100"}`}>
-                    <p className={`text-xs font-semibold mb-0.5 ${isPositiveBalance ? "text-emerald-600" : "text-rose-600"}`}>
+                <div className={`p-3 rounded-lg border shadow-sm ${isPositiveBalance ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-900/50" : "bg-rose-50 dark:bg-rose-900/20 border-rose-100 dark:border-rose-900/50"}`}>
+                    <p className={`text-xs font-semibold mb-0.5 ${isPositiveBalance ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
                         {accumulate ? "Accumulated" : "Current Balance"}
                     </p>
-                    <p className="text-xl font-bold text-slate-800 tracking-tight">
+                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
                         {finalBalance > 0 ? "+" : ""}{Math.round(finalBalance * 10) / 10}h
                     </p>
                 </div>
-                <div className="p-3 rounded-lg border bg-orange-50 border-orange-100 shadow-sm">
-                    <p className="text-xs font-semibold mb-0.5 text-orange-600">Total Extra</p>
-                    <p className="text-xl font-bold text-slate-800 tracking-tight">
+                <div className="p-3 rounded-lg border bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-900/50 shadow-sm">
+                    <p className="text-xs font-semibold mb-0.5 text-orange-600 dark:text-orange-400">Total Extra</p>
+                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
                         {Math.round(totalExtraHours * 10) / 10}h
                     </p>
                 </div>

@@ -11,8 +11,8 @@ import dynamic from "next/dynamic";
 const GeotrackMap = dynamic(() => import("./GeotrackMap"), {
     ssr: false,
     loading: () => (
-        <div className="flex justify-center items-center h-[500px] bg-slate-50 border border-slate-200 rounded-xl">
-            <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <div className="flex justify-center items-center h-[500px] bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-600 dark:text-blue-500" />
         </div>
     )
 });
@@ -110,21 +110,21 @@ export default function GeotrackTab() {
                     <button
                         onClick={() => setShowAccuracy(!showAccuracy)}
                         className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors border ${showAccuracy
-                            ? 'bg-blue-50 border-blue-200 text-blue-700'
-                            : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                            ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-400'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'}`}
                     >
                         <Crosshair className="w-4 h-4" />
                         Accuracy Circles
                     </button>
 
-                    <div className="flex items-center bg-white rounded-lg shadow-sm border border-slate-200">
+                    <div className="flex items-center bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
                         <button
                             onClick={() => handleDateChange("prev")}
-                            className="p-2 hover:bg-slate-50 text-slate-600 rounded-l-lg"
+                            className="p-2 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-l-lg transition-colors"
                         >
                             <ChevronLeft className="w-5 h-5" />
                         </button>
-                        <div className="relative px-3 py-2 font-medium text-blue-600 border-x border-slate-200 min-w-[140px] text-center pointer-events-none">
+                        <div className="relative px-3 py-2 font-medium text-blue-600 dark:text-blue-400 border-x border-slate-200 dark:border-slate-700 min-w-[140px] text-center pointer-events-none">
                             {getDateLabel()}
                             <input
                                 type="date"
@@ -137,20 +137,20 @@ export default function GeotrackTab() {
                         </div>
                         <button
                             onClick={() => handleDateChange("next")}
-                            className="p-2 hover:bg-slate-50 text-slate-600 rounded-r-lg"
+                            className="p-2 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-r-lg transition-colors"
                         >
                             <ChevronRight className="w-5 h-5" />
                         </button>
                     </div>
 
-                    <div className="flex bg-slate-100 p-1 rounded-lg">
+                    <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
                         {(["day", "week", "month", "year"] as TimeUnit[]).map(unit => (
                             <button
                                 key={unit}
                                 onClick={() => setTimeUnit(unit)}
                                 className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${timeUnit === unit
-                                    ? "bg-white text-blue-600 shadow-sm"
-                                    : "text-slate-600 hover:text-slate-900"
+                                    ? "bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm"
+                                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                                     }`}
                             >
                                 {unit.charAt(0).toUpperCase() + unit.slice(1)}
@@ -162,9 +162,9 @@ export default function GeotrackTab() {
 
             <div className="relative">
                 {(isLoading || isFetching) && (
-                    <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-[500] flex justify-center items-center rounded-xl border border-slate-200 h-[500px]">
-                        <div className="bg-white p-4 rounded-xl shadow-lg flex items-center gap-3 text-slate-700">
-                            <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                    <div className="absolute inset-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-[2px] z-[500] flex justify-center items-center rounded-xl border border-slate-200 dark:border-slate-800 h-[500px]">
+                        <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-lg flex items-center gap-3 text-slate-700 dark:text-slate-200 border border-slate-100 dark:border-slate-700">
+                            <Loader2 className="w-6 h-6 animate-spin text-blue-600 dark:text-blue-500" />
                             <span className="font-medium">Loading data...</span>
                         </div>
                     </div>
@@ -172,7 +172,7 @@ export default function GeotrackTab() {
                 <GeotrackMap data={data || []} showAccuracy={showAccuracy} />
             </div>
 
-            <div className="text-sm text-slate-500 text-center">
+            <div className="text-sm text-slate-500 dark:text-slate-400 text-center">
                 Displaying {data?.length || 0} tracking points for this period.
             </div>
         </div>

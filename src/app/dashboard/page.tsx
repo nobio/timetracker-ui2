@@ -167,7 +167,7 @@ export default function DashboardPage() {
 
     if (entriesError) {
         return (
-            <div className="bg-red-50 text-red-600 p-4 rounded-lg">
+            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-lg border border-red-200 dark:border-red-900/50">
                 Error loading entries. Please try again.
             </div>
         );
@@ -207,7 +207,7 @@ export default function DashboardPage() {
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h1 className="text-2xl font-bold text-slate-800">Time Entries</h1>
+                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Time Entries</h1>
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                     <button
                         onClick={() => {
@@ -215,7 +215,7 @@ export default function DashboardPage() {
                             refetchStats();
                         }}
                         disabled={isFetchingEntries || isFetchingStats}
-                        className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm disabled:opacity-50"
+                        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm disabled:opacity-50"
                         title="Reload data"
                     >
                         <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
@@ -224,7 +224,7 @@ export default function DashboardPage() {
                     <button
                         onClick={() => setShowMapModal(true)}
                         disabled={!hasLocation}
-                        className={`flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
                         title={hasLocation ? "Show locations on map" : "No location data for this date"}
                     >
                         <MapIcon className="w-4 h-4" />
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                     </button>
                     <button
                         onClick={() => setShowGeotrackModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm"
+                        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm"
                         title="Show geotracking data"
                     >
                         <Route className="w-4 h-4" />
@@ -260,37 +260,37 @@ export default function DashboardPage() {
 
             {/* Stats Overview Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 mb-1">Total (Gesamt)</p>
-                    <p className="text-2xl font-bold text-slate-800">{formatMsToHoursMinutes(busyStats?.duration || 0)}</p>
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total (Gesamt)</p>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">{formatMsToHoursMinutes(busyStats?.duration || 0)}</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 mb-1">Work (Arbeit)</p>
-                    <p className="text-2xl font-bold text-blue-600">{formatMsToHoursMinutes(busyStats?.busytime || 0)}</p>
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Work (Arbeit)</p>
+                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{formatMsToHoursMinutes(busyStats?.busytime || 0)}</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 mb-1">Pause</p>
-                    <p className="text-2xl font-bold text-amber-500">{formatMsToHoursMinutes(busyStats?.pause || 0)}</p>
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Pause</p>
+                    <p className="text-2xl font-bold text-amber-500 dark:text-amber-400">{formatMsToHoursMinutes(busyStats?.pause || 0)}</p>
                 </div>
-                <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 mb-1">End (Predicted)</p>
-                    <p className="text-2xl font-bold text-slate-800">{predictedEnd}</p>
+                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
+                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">End (Predicted)</p>
+                    <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">{predictedEnd}</p>
                 </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
                 {/* Date Navigation Header */}
-                <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between">
+                <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between">
                     <button
                         onClick={() => setSelectedDate(prev => subDays(prev, 1))}
-                        className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-200/50 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700 rounded-lg transition-colors"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
 
-                    <div className="flex items-center gap-3 font-medium text-slate-700">
+                    <div className="flex items-center gap-3 font-medium text-slate-700 dark:text-slate-200">
                         <div
-                            className="relative p-2 -m-2 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer group"
+                            className="relative p-2 -m-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer group"
                             title="Select a specific date"
                         >
                             <CalendarIcon className="w-5 h-5 text-blue-600 group-hover:text-blue-700 transition-colors" />
@@ -309,7 +309,7 @@ export default function DashboardPage() {
                         </div>
                         <button
                             onClick={() => setSelectedDate(new Date())}
-                            className={`transition-colors ${isToday ? "cursor-default text-slate-800" : "hover:text-blue-600 cursor-pointer"}`}
+                            className={`transition-colors ${isToday ? "cursor-default text-slate-800 dark:text-slate-100" : "hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer"}`}
                             title={isToday ? "" : "Return to Today"}
                         >
                             {isToday ? "Today" : format(selectedDate, "EEEE, MMMM d, yyyy")}
@@ -318,36 +318,36 @@ export default function DashboardPage() {
 
                     <button
                         onClick={() => setSelectedDate(prev => addDays(prev, 1))}
-                        className="p-2 rounded-lg transition-colors text-slate-500 hover:text-slate-800 hover:bg-slate-200/50"
+                        className="p-2 rounded-lg transition-colors text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700"
                     >
                         <ChevronRight className="w-5 h-5" />
                     </button>
                 </div>
 
                 {/* Mobile View: Cards */}
-                <div className="md:hidden divide-y divide-slate-100">
+                <div className="md:hidden divide-y divide-slate-100 dark:divide-slate-800">
                     {[...entries].sort((a, b) => new Date(b.entry_date).getTime() - new Date(a.entry_date).getTime()).map((entry) => (
                         <div key={entry._id || entry.entry_date} className="p-4 space-y-3">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <div className="font-medium text-slate-800">
+                                    <div className="font-medium text-slate-800 dark:text-slate-200">
                                         {entry.direction === "enter" ? "Clocked In" : "Clocked Out"}
                                     </div>
-                                    <div className="text-sm text-slate-500">
+                                    <div className="text-sm text-slate-500 dark:text-slate-400">
                                         {format(new Date(entry.entry_date), "MMM d, yyyy")}
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end gap-2">
                                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${entry.direction === "enter"
-                                        ? "bg-emerald-100 text-emerald-800"
-                                        : "bg-amber-100 text-amber-800"
+                                        ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400"
+                                        : "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400"
                                         }`}>
                                         {entry.direction}
                                     </span>
                                     <div className="flex gap-1">
                                         <button
                                             onClick={() => triggerEdit(entry)}
-                                            className="text-slate-400 hover:text-blue-600 transition-colors p-1 rounded-full hover:bg-blue-50"
+                                            className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30"
                                             title="Edit Entry"
                                         >
                                             <Pencil className="w-4 h-4" />
@@ -355,7 +355,7 @@ export default function DashboardPage() {
                                         <button
                                             onClick={() => triggerDelete(entry._id)}
                                             disabled={deleteEntryMutation.isPending}
-                                            className="text-red-400 hover:text-red-600 transition-colors p-1 -mr-1 rounded-full hover:bg-red-50 disabled:opacity-50"
+                                            className="text-red-400 hover:text-red-600 transition-colors p-1 -mr-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-50"
                                             title="Delete Entry"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -363,16 +363,16 @@ export default function DashboardPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2 text-slate-600 text-sm">
+                            <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400 text-sm">
                                 <Clock className="w-4 h-4" />
                                 {format(new Date(entry.entry_date), "HH:mm")}
                             </div>
                         </div>
                     ))}
                     {entries.length === 0 && (
-                        <div className="p-12 flex flex-col items-center justify-center text-slate-500 space-y-3">
-                            <div className="bg-slate-100 p-3 rounded-full">
-                                <CalendarIcon className="w-6 h-6 text-slate-400" />
+                        <div className="p-12 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 space-y-3">
+                            <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-full">
+                                <CalendarIcon className="w-6 h-6 text-slate-400 dark:text-slate-500" />
                             </div>
                             <p>No time entries for {isToday ? "today" : "this date"}.</p>
                         </div>
@@ -381,16 +381,16 @@ export default function DashboardPage() {
 
                 {/* Desktop View: Table */}
                 <div className="hidden md:block overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-200">
-                        <thead className="bg-slate-50">
+                    <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+                        <thead className="bg-slate-50 dark:bg-slate-800/50">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                     Date
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                     Time
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                     Type
                                 </th>
                                 <th scope="col" className="relative px-6 py-3">
@@ -398,20 +398,20 @@ export default function DashboardPage() {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-slate-200">
+                        <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800">
                             {[...entries].sort((a, b) => new Date(b.entry_date).getTime() - new Date(a.entry_date).getTime()).map((entry) => (
-                                <tr key={entry._id || entry.entry_date} className="hover:bg-slate-50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 font-medium">
+                                <tr key={entry._id || entry.entry_date} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 dark:text-slate-200 font-medium">
                                         {format(new Date(entry.entry_date), "MMM d, yyyy")}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-slate-400" />
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 flex items-center gap-2">
+                                        <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                                         {format(new Date(entry.entry_date), "HH:mm")}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${entry.direction === "enter"
-                                            ? "bg-emerald-100 text-emerald-800"
-                                            : "bg-amber-100 text-amber-800"
+                                            ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400"
+                                            : "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400"
                                             }`}>
                                             {entry.direction}
                                         </span>
@@ -420,7 +420,7 @@ export default function DashboardPage() {
                                         <div className="flex items-center justify-end gap-2">
                                             <button
                                                 onClick={() => triggerEdit(entry)}
-                                                className="text-slate-400 hover:text-blue-600 transition-colors p-2 rounded-full hover:bg-blue-50"
+                                                className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30"
                                                 title="Edit Entry"
                                             >
                                                 <Pencil className="w-4 h-4" />
@@ -428,7 +428,7 @@ export default function DashboardPage() {
                                             <button
                                                 onClick={() => triggerDelete(entry._id)}
                                                 disabled={deleteEntryMutation.isPending}
-                                                className="text-red-400 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50 disabled:opacity-50"
+                                                className="text-red-400 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-50"
                                                 title="Delete Entry"
                                             >
                                                 <Trash2 className="w-4 h-4" />
@@ -439,14 +439,14 @@ export default function DashboardPage() {
                             ))}
                             {entries.length === 0 && (
                                 <tr>
-                                    <td colSpan={4} className="px-6 py-16 text-center text-slate-500">
+                                    <td colSpan={4} className="px-6 py-16 text-center text-slate-500 dark:text-slate-400">
                                         <div className="flex flex-col items-center justify-center space-y-3">
-                                            <div className="bg-slate-50 p-3 rounded-full">
-                                                <CalendarIcon className="w-8 h-8 text-slate-300" />
+                                            <div className="bg-slate-50 dark:bg-slate-800 p-3 rounded-full">
+                                                <CalendarIcon className="w-8 h-8 text-slate-300 dark:text-slate-600" />
                                             </div>
-                                            <p className="text-base text-slate-600">No time entries for {isToday ? "today" : "this date"}.</p>
+                                            <p className="text-base text-slate-600 dark:text-slate-300">No time entries for {isToday ? "today" : "this date"}.</p>
                                             {isToday && (
-                                                <p className="text-sm text-slate-500">Click the Start Timer button above to begin tracking.</p>
+                                                <p className="text-sm text-slate-500 dark:text-slate-400">Click the Start Timer button above to begin tracking.</p>
                                             )}
                                         </div>
                                     </td>
@@ -460,24 +460,24 @@ export default function DashboardPage() {
             {/* Delete Confirmation Modal */}
             {entryToDelete && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
                         <div className="p-6 text-center sm:text-left">
                             <div className="flex justify-center sm:justify-start mb-4">
-                                <div className="bg-red-100 p-3 rounded-full text-red-600">
+                                <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full text-red-600 dark:text-red-500">
                                     <Trash2 className="w-6 h-6" />
                                 </div>
                             </div>
-                            <h3 className="text-lg font-bold text-slate-800 mb-2">Delete Time Entry</h3>
-                            <p className="text-slate-600 text-sm">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2">Delete Time Entry</h3>
+                            <p className="text-slate-600 dark:text-slate-400 text-sm">
                                 Are you sure you want to delete this specific time tracking event? This action will completely remove it from the system and cannot be undone.
                             </p>
                         </div>
-                        <div className="bg-slate-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 rounded-b-xl border-t border-slate-200">
+                        <div className="bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 rounded-b-xl border-t border-slate-200 dark:border-slate-800">
                             <button
                                 type="button"
                                 onClick={() => setEntryToDelete(null)}
                                 disabled={deleteEntryMutation.isPending}
-                                className="w-full sm:w-auto px-4 py-2 font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors focus:ring-2 focus:ring-slate-200 focus:outline-none disabled:opacity-50"
+                                className="w-full sm:w-auto px-4 py-2 font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100 transition-colors focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 focus:outline-none disabled:opacity-50"
                             >
                                 Cancel
                             </button>
@@ -498,18 +498,18 @@ export default function DashboardPage() {
             {/* Edit Entry Modal */}
             {entryToEdit && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
                         <div className="p-6">
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-blue-100 p-2 rounded-full text-blue-600">
+                                <div className="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full text-blue-600 dark:text-blue-500">
                                     <Clock className="w-5 h-5" />
                                 </div>
-                                <h3 className="text-lg font-bold text-slate-800">Edit Time</h3>
+                                <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Edit Time</h3>
                             </div>
 
                             <div className="space-y-4">
                                 <div>
-                                    <label htmlFor="editTime" className="block text-sm font-medium text-slate-700 mb-1">
+                                    <label htmlFor="editTime" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
                                         Time ({entryToEdit.direction === "enter" ? "Clocked In" : "Clocked Out"})
                                     </label>
                                     <input
@@ -517,18 +517,18 @@ export default function DashboardPage() {
                                         id="editTime"
                                         value={editFormTime}
                                         onChange={(e) => setEditFormTime(e.target.value)}
-                                        className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
+                                        className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                                         required
                                     />
                                 </div>
                             </div>
                         </div>
-                        <div className="bg-slate-50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 rounded-b-xl border-t border-slate-200">
+                        <div className="bg-slate-50 dark:bg-slate-800/50 px-6 py-4 flex flex-col-reverse sm:flex-row sm:justify-end gap-3 rounded-b-xl border-t border-slate-200 dark:border-slate-800">
                             <button
                                 type="button"
                                 onClick={() => setEntryToEdit(null)}
                                 disabled={editEntryMutation.isPending}
-                                className="w-full sm:w-auto px-4 py-2 font-medium text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 hover:text-slate-900 transition-colors focus:ring-2 focus:ring-slate-200 focus:outline-none disabled:opacity-50"
+                                className="w-full sm:w-auto px-4 py-2 font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-slate-100 transition-colors focus:ring-2 focus:ring-slate-200 dark:focus:ring-slate-700 focus:outline-none disabled:opacity-50"
                             >
                                 Cancel
                             </button>
@@ -549,15 +549,15 @@ export default function DashboardPage() {
             {/* Map Modal */}
             {showMapModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-center p-4 border-b border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                                <MapIcon className="w-5 h-5 text-blue-600" />
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-4xl overflow-hidden animate-in fade-in zoom-in-95 duration-200 border border-slate-200 dark:border-slate-800">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-800">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <MapIcon className="w-5 h-5 text-blue-600 dark:text-blue-500" />
                                 Locations for {isToday ? "Today" : format(selectedDate, "MMM d, yyyy")}
                             </h3>
                             <button
                                 onClick={() => setShowMapModal(false)}
-                                className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-full hover:bg-slate-100"
+                                className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
                             >
                                 <X className="w-5 h-5" />
                             </button>
@@ -580,15 +580,15 @@ export default function DashboardPage() {
             {/* Geotrack Modal */}
             {showGeotrackModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-xl w-full max-w-6xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 flex flex-col">
-                        <div className="flex justify-between items-center p-4 border-b border-slate-200">
-                            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                                <Route className="w-5 h-5 text-blue-600" />
+                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-6xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 flex flex-col border border-slate-200 dark:border-slate-800">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-800">
+                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                                <Route className="w-5 h-5 text-blue-600 dark:text-blue-500" />
                                 Geotracking
                             </h3>
                             <button
                                 onClick={() => setShowGeotrackModal(false)}
-                                className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-full hover:bg-slate-100"
+                                className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
                             >
                                 <X className="w-5 h-5" />
                             </button>

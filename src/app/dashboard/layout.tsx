@@ -36,9 +36,9 @@ export default function DashboardLayout({
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col md:flex-row">
             {/* Mobile nav header */}
-            <div className="md:hidden bg-white border-b border-slate-200 px-5 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm backdrop-blur-md bg-white/80">
+            <div className="md:hidden bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-5 py-4 flex justify-between items-center sticky top-0 z-50 shadow-sm backdrop-blur-md bg-white/80 dark:bg-slate-950/80">
                 <div className="flex items-center gap-2 text-blue-600 font-bold text-lg">
                     <Clock className="w-5 h-5" />
                     <span className="tracking-tight">Timetracker</span>
@@ -53,9 +53,9 @@ export default function DashboardLayout({
 
             {/* Sidebar Navigation */}
             <div
-                className="hidden md:flex md:relative md:translate-x-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col min-h-screen"
+                className="hidden md:flex md:relative md:translate-x-0 z-40 w-64 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-slate-800 flex flex-col min-h-screen"
             >
-                <div className="p-6 border-b border-slate-200 items-center gap-3 text-blue-600 font-bold text-xl flex">
+                <div className="p-6 border-b border-slate-200 dark:border-slate-800 items-center gap-3 text-blue-600 dark:text-blue-500 font-bold text-xl flex">
                     <Clock className="w-8 h-8" />
                     Timetracker
                 </div>
@@ -67,20 +67,20 @@ export default function DashboardLayout({
                                 key={item.href}
                                 href={item.href}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all font-medium ${isActive
-                                    ? "bg-blue-50 text-blue-600 shadow-sm border border-blue-100"
-                                    : "text-slate-600 hover:bg-slate-50 hover:text-blue-500"
+                                    ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-blue-900/50"
+                                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-blue-500 dark:hover:text-blue-400"
                                     }`}
                             >
-                                <item.icon className={`w-5 h-5 ${isActive ? "text-blue-600" : "text-slate-400"}`} />
+                                <item.icon className={`w-5 h-5 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`} />
                                 {item.label}
                             </Link>
                         );
                     })}
                 </nav>
-                <div className="p-4 border-t border-slate-200">
+                <div className="p-4 border-t border-slate-200 dark:border-slate-800">
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors font-medium w-full"
+                        className="flex items-center gap-3 px-4 py-3 text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors font-medium w-full"
                     >
                         <LogOut className="w-5 h-5" />
                         Logout

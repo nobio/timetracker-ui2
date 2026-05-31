@@ -59,20 +59,20 @@ export default function StatisticsPage() {
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h1 className="text-2xl font-bold text-slate-800">Statistics</h1>
+                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Statistics</h1>
 
                 {/* Global Date & Unit Controls */}
                 <div className="flex flex-wrap items-center gap-2">
 
                     {showCalendarControls && (
-                        <div className="flex items-center bg-white rounded-lg shadow-sm border border-slate-200">
+                        <div className="flex items-center bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700">
                             <button
                                 onClick={() => handleDateChange("prev")}
-                                className="p-2 hover:bg-slate-50 text-slate-600 rounded-l-lg"
+                                className="p-2 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-l-lg transition-colors"
                             >
                                 <ChevronLeft className="w-5 h-5" />
                             </button>
-                            <div className="relative px-3 py-2 font-medium text-blue-600 border-x border-slate-200 min-w-32 text-center pointer-events-none">
+                            <div className="relative px-3 py-2 font-medium text-blue-600 dark:text-blue-400 border-x border-slate-200 dark:border-slate-700 min-w-32 text-center pointer-events-none">
                                 {getDateLabel()}
                                 {/* Hidden DatePicker Overlay (Native) */}
                                 <input
@@ -86,7 +86,7 @@ export default function StatisticsPage() {
                             </div>
                             <button
                                 onClick={() => handleDateChange("next")}
-                                className="p-2 hover:bg-slate-50 text-slate-600 rounded-r-lg"
+                                className="p-2 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 rounded-r-lg transition-colors"
                             >
                                 <ChevronRight className="w-5 h-5" />
                             </button>
@@ -94,14 +94,14 @@ export default function StatisticsPage() {
                     )}
 
                     {showTimeUnitControls && (
-                        <div className="flex bg-slate-100 p-1 rounded-lg">
+                        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
                             {(["day", "week", "month", "year"] as TimeUnit[]).map(unit => (
                                 <button
                                     key={unit}
                                     onClick={() => setTimeUnit(unit)}
                                     className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${timeUnit === unit
-                                        ? "bg-white text-blue-600 shadow-sm"
-                                        : "text-slate-600 hover:text-slate-900"
+                                        ? "bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-sm"
+                                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                                         }`}
                                 >
                                     {unit.charAt(0).toUpperCase() + unit.slice(1)}
@@ -114,7 +114,7 @@ export default function StatisticsPage() {
             </div>
 
             {/* Navigation Tabs */}
-            <div className="border-b border-slate-200">
+            <div className="border-b border-slate-200 dark:border-slate-800">
                 <nav className="flex space-x-8" aria-label="Tabs">
                     {[
                         { id: "extrahours", label: "Extra Hours", icon: Clock },
@@ -126,11 +126,11 @@ export default function StatisticsPage() {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
                             className={`flex items-center gap-2 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
-                                ? "border-blue-500 text-blue-600"
-                                : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                                ? "border-blue-500 text-blue-600 dark:text-blue-400 dark:border-blue-500"
+                                : "border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:border-slate-300 dark:hover:border-slate-600"
                                 }`}
                         >
-                            <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-blue-600" : "text-slate-400"}`} />
+                            <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`} />
                             {tab.label}
                         </button>
                     ))}
@@ -138,7 +138,7 @@ export default function StatisticsPage() {
             </div>
 
             {/* Tab Views */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 min-h-[400px] flex items-center justify-center">
+            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 min-h-[400px] flex items-center justify-center">
                 {activeTab === "aggregate" && (
                     <AggregateChart timeUnit={timeUnit} />
                 )}
@@ -163,8 +163,8 @@ export default function StatisticsPage() {
                 )}
 
                 {activeTab !== "aggregate" && activeTab !== "breaktime" && activeTab !== "come-go" && activeTab !== "extrahours" && (
-                    <div className="text-center text-slate-500">
-                        <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500" />
+                    <div className="text-center text-slate-500 dark:text-slate-400">
+                        <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500 dark:text-blue-400" />
                         <p>Loading {activeTab} statistics...</p>
                     </div>
                 )}
