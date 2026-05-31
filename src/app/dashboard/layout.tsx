@@ -32,7 +32,6 @@ export default function DashboardLayout({
     const navItems = [
         { icon: Clock, label: "Time Entries", href: "/dashboard" },
         { icon: BarChart3, label: "Statistics", href: "/dashboard/statistics" },
-        { icon: Users, label: "Members", href: "/dashboard/members" },
         { icon: Settings, label: "Settings", href: "/dashboard/settings" },
     ];
 

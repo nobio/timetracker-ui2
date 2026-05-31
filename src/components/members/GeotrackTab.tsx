@@ -103,10 +103,7 @@ export default function GeotrackTab() {
     return (
         <div className="space-y-6">
             <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-xl font-bold text-slate-800">
-                    <MapIcon className="w-6 h-6 text-blue-600" />
-                    <h2>Geotracking</h2>
-                </div>
+
 
                 {/* Controls */}
                 <div className="flex flex-wrap items-center gap-3">

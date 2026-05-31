@@ -5,7 +5,7 @@ import { BreaktimeChart } from "@/components/statistics/BreaktimeChart";
 import { ComeGoChart } from "@/components/statistics/ComeGoChart";
 import { ExtraHoursChart } from "@/components/statistics/ExtraHoursChart";
 import { addDays, addMonths, addWeeks, addYears, format, getISOWeek, getISOWeekYear, subDays, subMonths, subWeeks, subYears } from "date-fns";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Clock, Coffee, ArrowRightLeft, BarChart } from "lucide-react";
 import { useState } from "react";
 
 type TimeUnit = "day" | "week" | "month" | "year";
@@ -117,19 +117,20 @@ export default function StatisticsPage() {
             <div className="border-b border-slate-200">
                 <nav className="flex space-x-8" aria-label="Tabs">
                     {[
-                        { id: "extrahours", label: "Extra Hours" },
-                        { id: "breaktime", label: "Breaktime" },
-                        { id: "come-go", label: "Come & Go" },
-                        { id: "aggregate", label: "Aggregate" },
+                        { id: "extrahours", label: "Extra Hours", icon: Clock },
+                        { id: "breaktime", label: "Breaktime", icon: Coffee },
+                        { id: "come-go", label: "Come & Go", icon: ArrowRightLeft },
+                        { id: "aggregate", label: "Aggregate", icon: BarChart },
                     ].map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id as any)}
-                            className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
+                            className={`flex items-center gap-2 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                                 ? "border-blue-500 text-blue-600"
                                 : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
                                 }`}
                         >
+                            <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-blue-600" : "text-slate-400"}`} />
                             {tab.label}
                         </button>
                     ))}

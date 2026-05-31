@@ -2,15 +2,17 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
-import { Settings, Save, Server, Database, Activity, Search, Loader2 } from "lucide-react";
+import { Settings, Save, Server, Database, Activity, Search, Loader2, ToggleLeft, Users } from "lucide-react";
 import { components } from "@/lib/api/schema";
 import { useState } from "react";
+import UsersTab from "@/components/members/UsersTab";
 
 type Toggle = components["schemas"]["Toggle"] & { id?: string, _id?: string };
 
 export default function SettingsPage() {
     const queryClient = useQueryClient();
     const [actionMessage, setActionMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const [activeTab, setActiveTab] = useState<"toggles" | "server" | "members">("toggles");
 
     const { data: toggles, isLoading } = useQuery({
         queryKey: ["toggles"],
@@ -84,6 +86,29 @@ export default function SettingsPage() {
                 <h1 className="text-2xl font-bold text-slate-800">Administration Settings</h1>
             </div>
 
+            {/* Navigation Tabs */}
+            <div className="border-b border-slate-200">
+                <nav className="flex space-x-8" aria-label="Tabs">
+                    {[
+                        { id: "toggles", label: "System Notification Toggles", icon: ToggleLeft },
+                        { id: "server", label: "Server Administration", icon: Server },
+                        { id: "members", label: "Member Administration", icon: Users },
+                    ].map((tab) => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id as any)}
+                            className={`flex items-center gap-2 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
+                                ? "border-blue-500 text-blue-600"
+                                : "border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300"
+                                }`}
+                        >
+                            <tab.icon className={`w-4 h-4 ${activeTab === tab.id ? "text-blue-600" : "text-slate-400"}`} />
+                            {tab.label}
+                        </button>
+                    ))}
+                </nav>
+            </div>
+
             {actionMessage && (
                 <div className={`p-4 rounded-lg flex items-center gap-2 ${actionMessage.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
                     {actionMessage.type === 'success' ? <Save className="w-5 h-5" /> : <Activity className="w-5 h-5" />}
@@ -91,99 +116,110 @@ export default function SettingsPage() {
                 </div>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="min-h-[400px]">
                 {/* System Toggles */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div className="p-4 border-b border-slate-200 bg-slate-50">
-                        <h2 className="text-lg font-semibold text-slate-800">System Notification Toggles</h2>
-                        <p className="text-sm text-slate-500">Enable or disable various system-wide notifications and behavioral flags.</p>
-                    </div>
-                    <div className="divide-y divide-slate-100">
-                        {toggles?.map((toggle) => (
-                            <div key={toggle.name} className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
-                                <label htmlFor={`toggle-${toggle.name}`} className="flex-1 cursor-pointer">
-                                    <div className="font-medium text-slate-700">{toggle.name}</div>
-                                    <div className="text-sm text-slate-500">Toggle state for {toggle.name} flag</div>
-                                </label>
-                                <div className="ml-4 flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        id={`toggle-${toggle.name}`}
-                                        className="w-5 h-5 text-blue-600 rounded border-slate-300 focus:ring-blue-500 transition-all cursor-pointer"
-                                        checked={toggle.toggle as any === true || toggle.toggle === "true"}
-                                        onChange={(e) => handleToggleChange(toggle, e.target.checked)}
-                                        disabled={updateToggleMutation.isPending}
-                                    />
+                {activeTab === "toggles" && (
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden max-w-3xl">
+                        <div className="p-4 border-b border-slate-200 bg-slate-50">
+                            <h2 className="text-lg font-semibold text-slate-800">System Notification Toggles</h2>
+                            <p className="text-sm text-slate-500">Enable or disable various system-wide notifications and behavioral flags.</p>
+                        </div>
+                        <div className="divide-y divide-slate-100">
+                            {toggles?.map((toggle) => (
+                                <div key={toggle.name} className="flex items-center justify-between p-4 hover:bg-slate-50 transition-colors">
+                                    <label htmlFor={`toggle-${toggle.name}`} className="flex-1 cursor-pointer">
+                                        <div className="font-medium text-slate-700">{toggle.name}</div>
+                                        <div className="text-sm text-slate-500">Toggle state for {toggle.name} flag</div>
+                                    </label>
+                                    <div className="ml-4 flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            id={`toggle-${toggle.name}`}
+                                            className="w-5 h-5 text-blue-600 rounded border-slate-300 focus:ring-blue-500 transition-all cursor-pointer"
+                                            checked={toggle.toggle as any === true || toggle.toggle === "true"}
+                                            onChange={(e) => handleToggleChange(toggle, e.target.checked)}
+                                            disabled={updateToggleMutation.isPending}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
 
                 {/* Admin Actions */}
-                <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden h-fit">
-                    <div className="p-4 border-b border-slate-200 bg-slate-50">
-                        <h2 className="text-lg font-semibold text-slate-800">Server Administration</h2>
-                        <p className="text-sm text-slate-500">Trigger manual data processing, recalculations, and backups.</p>
+                {activeTab === "server" && (
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden max-w-3xl">
+                        <div className="p-4 border-b border-slate-200 bg-slate-50">
+                            <h2 className="text-lg font-semibold text-slate-800">Server Administration</h2>
+                            <p className="text-sm text-slate-500">Trigger manual data processing, recalculations, and backups.</p>
+                        </div>
+                        <div className="p-4 space-y-4">
+                            <button
+                                onClick={() => triggerAction.mutate('stats')}
+                                disabled={triggerAction.isPending}
+                                className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50 transition-all text-left group disabled:opacity-50"
+                            >
+                                <div className="bg-blue-100 text-blue-600 p-3 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <Activity className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="font-semibold text-slate-800">Recalculate Statistics</div>
+                                    <div className="text-sm text-slate-500">Force the server to compute new busy time statistics</div>
+                                </div>
+                            </button>
+
+                            <button
+                                onClick={() => triggerAction.mutate('evaluate')}
+                                disabled={triggerAction.isPending}
+                                className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-purple-500 hover:bg-purple-50 transition-all text-left group disabled:opacity-50"
+                            >
+                                <div className="bg-purple-100 text-purple-600 p-3 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                                    <Search className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="font-semibold text-slate-800">Evaluate Data</div>
+                                    <div className="text-sm text-slate-500">Check time entries for missing records and wrong order</div>
+                                </div>
+                            </button>
+
+                            <button
+                                onClick={() => triggerAction.mutate('dump')}
+                                disabled={triggerAction.isPending}
+                                className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left group disabled:opacity-50"
+                            >
+                                <div className="bg-emerald-100 text-emerald-600 p-3 rounded-xl group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                    <Server className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="font-semibold text-slate-800">Dump Data to File System</div>
+                                    <div className="text-sm text-slate-500">Export the MongoDB dataset to the local container volume</div>
+                                </div>
+                            </button>
+
+                            <button
+                                onClick={() => triggerAction.mutate('backup')}
+                                disabled={triggerAction.isPending}
+                                className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-rose-500 hover:bg-rose-50 transition-all text-left group disabled:opacity-50"
+                            >
+                                <div className="bg-rose-100 text-rose-600 p-3 rounded-xl group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                                    <Database className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="font-semibold text-slate-800">Database Backup</div>
+                                    <div className="text-sm text-slate-500">Create a secure backup representation in the database</div>
+                                </div>
+                            </button>
+                        </div>
                     </div>
-                    <div className="p-4 space-y-4">
-                        <button
-                            onClick={() => triggerAction.mutate('stats')}
-                            disabled={triggerAction.isPending}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-blue-500 hover:bg-blue-50 transition-all text-left group disabled:opacity-50"
-                        >
-                            <div className="bg-blue-100 text-blue-600 p-3 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                                <Activity className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <div className="font-semibold text-slate-800">Recalculate Statistics</div>
-                                <div className="text-sm text-slate-500">Force the server to compute new busy time statistics</div>
-                            </div>
-                        </button>
+                )}
 
-                        <button
-                            onClick={() => triggerAction.mutate('evaluate')}
-                            disabled={triggerAction.isPending}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-purple-500 hover:bg-purple-50 transition-all text-left group disabled:opacity-50"
-                        >
-                            <div className="bg-purple-100 text-purple-600 p-3 rounded-xl group-hover:bg-purple-600 group-hover:text-white transition-colors">
-                                <Search className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <div className="font-semibold text-slate-800">Evaluate Data</div>
-                                <div className="text-sm text-slate-500">Check time entries for missing records and wrong order</div>
-                            </div>
-                        </button>
-
-                        <button
-                            onClick={() => triggerAction.mutate('dump')}
-                            disabled={triggerAction.isPending}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition-all text-left group disabled:opacity-50"
-                        >
-                            <div className="bg-emerald-100 text-emerald-600 p-3 rounded-xl group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                                <Server className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <div className="font-semibold text-slate-800">Dump Data to File System</div>
-                                <div className="text-sm text-slate-500">Export the MongoDB dataset to the local container volume</div>
-                            </div>
-                        </button>
-
-                        <button
-                            onClick={() => triggerAction.mutate('backup')}
-                            disabled={triggerAction.isPending}
-                            className="w-full flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-rose-500 hover:bg-rose-50 transition-all text-left group disabled:opacity-50"
-                        >
-                            <div className="bg-rose-100 text-rose-600 p-3 rounded-xl group-hover:bg-rose-600 group-hover:text-white transition-colors">
-                                <Database className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <div className="font-semibold text-slate-800">Database Backup</div>
-                                <div className="text-sm text-slate-500">Create a secure backup representation in the database</div>
-                            </div>
-                        </button>
+                {/* User Administration */}
+                {activeTab === "members" && (
+                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                        <UsersTab />
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );

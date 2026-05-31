@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
-import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw } from "lucide-react";
+import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const MapComponent = dynamic(() => import("@/components/Map"), {
@@ -11,6 +11,7 @@ const MapComponent = dynamic(() => import("@/components/Map"), {
 });
 import { components } from "@/lib/api/schema";
 import { useState } from "react";
+import GeotrackTab from "@/components/members/GeotrackTab";
 
 function formatMsToHoursMinutes(ms: number) {
     if (!ms || isNaN(ms)) return "00:00";
@@ -29,6 +30,7 @@ export default function DashboardPage() {
     const [entryToEdit, setEntryToEdit] = useState<TimeEntry | null>(null);
     const [editFormTime, setEditFormTime] = useState<string>("00:00");
     const [showMapModal, setShowMapModal] = useState(false);
+    const [showGeotrackModal, setShowGeotrackModal] = useState(false);
 
     const { data: allEntries, isLoading: isLoadingEntries, isFetching: isFetchingEntries, error: entriesError, refetch: refetchEntries } = useQuery({
         queryKey: ["entries"],
@@ -227,6 +229,14 @@ export default function DashboardPage() {
                     >
                         <MapIcon className="w-4 h-4" />
                         <span className="hidden sm:inline">Map</span>
+                    </button>
+                    <button
+                        onClick={() => setShowGeotrackModal(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm"
+                        title="Show geotracking data"
+                    >
+                        <Route className="w-4 h-4" />
+                        <span className="hidden sm:inline">Geotracking</span>
                     </button>
                     <button
                         onClick={handleToggleTimer}
@@ -562,6 +572,29 @@ export default function DashboardPage() {
                                         label: `${format(new Date(e.entry_date), "HH:mm")} - ${e.direction === "enter" ? "Clocked In" : "Clocked Out"}`
                                     }))}
                             />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Geotrack Modal */}
+            {showGeotrackModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-6xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 flex flex-col">
+                        <div className="flex justify-between items-center p-4 border-b border-slate-200">
+                            <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
+                                <Route className="w-5 h-5 text-blue-600" />
+                                Geotracking
+                            </h3>
+                            <button
+                                onClick={() => setShowGeotrackModal(false)}
+                                className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-full hover:bg-slate-100"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto">
+                            <GeotrackTab />
                         </div>
                     </div>
                 </div>
