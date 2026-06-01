@@ -91,9 +91,9 @@ export default function SettingsPage() {
             <div className="border-b border-slate-200 dark:border-slate-800">
                 <nav className="flex space-x-8" aria-label="Tabs">
                     {[
-                        { id: "toggles", label: "System Notification Toggles", icon: ToggleLeft },
-                        { id: "server", label: "Server Administration", icon: Server },
-                        { id: "members", label: "Member Administration", icon: Users },
+                        { id: "toggles", label: "Toggles", icon: ToggleLeft },
+                        { id: "server", label: "Server", icon: Server },
+                        { id: "members", label: "Users", icon: Users },
                     ].map((tab) => (
                         <button
                             key={tab.id}
@@ -125,7 +125,7 @@ export default function SettingsPage() {
                             <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">System Notification Toggles</h2>
                             <p className="text-sm text-slate-500 dark:text-slate-400">Enable or disable various system-wide notifications and behavioral flags.</p>
                         </div>
-                        
+
                         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                             <div>
                                 <h3 className="font-medium text-slate-700 dark:text-slate-200">Appearance (Theme)</h3>
