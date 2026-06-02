@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
-import { Clock, Download, Settings, Users, Menu, X, LogOut, BarChart3 } from "lucide-react";
+import { Clock, Download, Settings, Users, Menu, X, LogOut, BarChart3, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -32,6 +32,7 @@ export default function DashboardLayout({
     const navItems = [
         { icon: Clock, label: "Time Entries", href: "/dashboard" },
         { icon: BarChart3, label: "Statistics", href: "/dashboard/statistics" },
+        { icon: MapPin, label: "Geotracking", href: "/dashboard/geotracking" },
         { icon: Settings, label: "Settings", href: "/dashboard/settings" },
     ];
 

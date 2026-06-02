@@ -5,13 +5,13 @@ import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
 import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route } from "lucide-react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 const MapComponent = dynamic(() => import("@/components/Map"), {
     ssr: false,
 });
 import { components } from "@/lib/api/schema";
 import { useState } from "react";
-import GeotrackTab from "@/components/members/GeotrackTab";
 
 function formatMsToHoursMinutes(ms: number) {
     if (!ms || isNaN(ms)) return "00:00";
@@ -30,7 +30,6 @@ export default function DashboardPage() {
     const [entryToEdit, setEntryToEdit] = useState<TimeEntry | null>(null);
     const [editFormTime, setEditFormTime] = useState<string>("00:00");
     const [showMapModal, setShowMapModal] = useState(false);
-    const [showGeotrackModal, setShowGeotrackModal] = useState(false);
 
     const { data: allEntries, isLoading: isLoadingEntries, isFetching: isFetchingEntries, error: entriesError, refetch: refetchEntries } = useQuery({
         queryKey: ["entries"],
@@ -229,14 +228,6 @@ export default function DashboardPage() {
                     >
                         <MapIcon className="w-4 h-4" />
                         <span className="hidden sm:inline">Map</span>
-                    </button>
-                    <button
-                        onClick={() => setShowGeotrackModal(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm"
-                        title="Show geotracking data"
-                    >
-                        <Route className="w-4 h-4" />
-                        <span className="hidden sm:inline">Geotracking</span>
                     </button>
                     <button
                         onClick={handleToggleTimer}
@@ -577,28 +568,6 @@ export default function DashboardPage() {
                 </div>
             )}
 
-            {/* Geotrack Modal */}
-            {showGeotrackModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-                    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl w-full max-w-6xl max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-200 flex flex-col border border-slate-200 dark:border-slate-800">
-                        <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-800">
-                            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-                                <Route className="w-5 h-5 text-blue-600 dark:text-blue-500" />
-                                Geotracking
-                            </h3>
-                            <button
-                                onClick={() => setShowGeotrackModal(false)}
-                                className="text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800"
-                            >
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <div className="p-6 overflow-y-auto">
-                            <GeotrackTab />
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
