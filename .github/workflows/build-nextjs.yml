@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [v24.x]  # Node.js versions to test against
+        node-version: [v26.x]  # Node.js versions to test against
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
