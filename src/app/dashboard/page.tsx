@@ -11,7 +11,7 @@ const MapComponent = dynamic(() => import("@/components/Map"), {
     ssr: false,
 });
 import { components } from "@/lib/api/schema";
-import { useState } from "react";
+import { useState, type TouchEvent } from "react";
 
 function formatMsToHoursMinutes(ms: number) {
     if (!ms || isNaN(ms)) return "00:00";
@@ -30,6 +30,35 @@ export default function DashboardPage() {
     const [entryToEdit, setEntryToEdit] = useState<TimeEntry | null>(null);
     const [editFormTime, setEditFormTime] = useState<string>("00:00");
     const [showMapModal, setShowMapModal] = useState(false);
+    const [touchStartY, setTouchStartY] = useState<number | null>(null);
+    const [pullDistance, setPullDistance] = useState(0);
+    const [isPulling, setIsPulling] = useState(false);
+    const PULL_THRESHOLD = 70;
+
+    const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+        if (window.scrollY === 0 && event.touches.length === 1) {
+            setTouchStartY(event.touches[0].clientY);
+            setPullDistance(0);
+            setIsPulling(true);
+        }
+    };
+
+    const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+        if (!isPulling || touchStartY === null) return;
+        const currentY = event.touches[0].clientY;
+        const distance = Math.max(0, currentY - touchStartY);
+        setPullDistance(Math.min(distance, 120));
+    };
+
+    const handleTouchEnd = () => {
+        if (isPulling && pullDistance >= PULL_THRESHOLD) {
+            refetchEntries();
+            refetchStats();
+        }
+        setTouchStartY(null);
+        setPullDistance(0);
+        setIsPulling(false);
+    };
 
     const { data: allEntries, isLoading: isLoadingEntries, isFetching: isFetchingEntries, error: entriesError, refetch: refetchEntries } = useQuery({
         queryKey: ["entries"],
@@ -204,9 +233,20 @@ export default function DashboardPage() {
     const isToday = isSameDay(selectedDate, new Date());
 
     return (
-        <div className="space-y-6">
+        <div
+            className="space-y-6"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
+        >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Time Entries</h1>
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Time Entries</h1>
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:hidden">
+                        Pull down to refresh on mobile.
+                    </p>
+                </div>
                 <div className="flex items-center gap-2 w-full sm:w-auto">
                     <button
                         onClick={() => {
