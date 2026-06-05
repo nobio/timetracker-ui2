@@ -117,6 +117,9 @@ export default function SettingsPage() {
                 </div>
             )}
 
+            <div className="mt-4 flex justify-start">
+                <ThemeSwitcher />
+            </div>
             <div className="min-h-[400px]">
                 {/* System Toggles */}
                 {activeTab === "toggles" && (
@@ -124,9 +127,6 @@ export default function SettingsPage() {
                         <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800">
                             <h2 className="text-lg font-semibold text-slate-800 dark:text-slate-100">System Notification Toggles</h2>
                             <p className="text-sm text-slate-500 dark:text-slate-400">Enable or disable various system-wide notifications and behavioral flags.</p>
-                            <div className="mt-4 flex justify-start">
-                                <ThemeSwitcher />
-                            </div>
                         </div>
 
                         <div className="divide-y divide-slate-100 dark:divide-slate-800">
