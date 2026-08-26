@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
-import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route } from "lucide-react";
+import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route, Plane, Ambulance } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -161,6 +161,23 @@ export default function DashboardPage() {
         }
     });
 
+    const markDayMutation = useMutation({
+        mutationFn: async (mark: "vacation" | "sick-leave") => {
+            const { data, error } = await apiClient.POST("/entries/mark", {
+                body: {
+                    entry_date: format(selectedDate, "yyyy-MM-dd"),
+                    mark,
+                }
+            });
+            if (error) throw new Error("Failed to mark day");
+            return data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["entries"] });
+            queryClient.invalidateQueries({ queryKey: ["entries", format(selectedDate, "yyyy-MM-dd"), "busy"] });
+        }
+    });
+
     const triggerDelete = (id: string | undefined) => {
         if (!id) return;
         setEntryToDelete(id);
@@ -230,6 +247,9 @@ export default function DashboardPage() {
         createEntryMutation.mutate(isWorking ? "go" : "enter");
     };
 
+    const actionButtonClass = "flex h-9 items-center justify-center gap-1.5 rounded-lg px-2 font-medium shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 w-[calc(50%-0.25rem)] sm:w-24";
+    const isActionPending = createEntryMutation.isPending || markDayMutation.isPending;
+
     const isToday = isSameDay(selectedDate, new Date());
 
     return (
@@ -247,14 +267,14 @@ export default function DashboardPage() {
                         Pull down to refresh on mobile.
                     </p>
                 </div>
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex flex-wrap items-center justify-end gap-2 w-full sm:w-auto">
                     <button
                         onClick={() => {
                             refetchEntries();
                             refetchStats();
                         }}
                         disabled={isFetchingEntries || isFetchingStats}
-                        className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm disabled:opacity-50"
+                        className={`${actionButtonClass} bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700`}
                         title="Reload data"
                     >
                         <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
@@ -263,7 +283,7 @@ export default function DashboardPage() {
                     <button
                         onClick={() => setShowMapModal(true)}
                         disabled={!hasLocation}
-                        className={`flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors w-full sm:w-auto justify-center font-medium shadow-sm ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`${actionButtonClass} bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
                         title={hasLocation ? "Show locations on map" : "No location data for this date"}
                     >
                         <MapIcon className="w-4 h-4" />
@@ -271,8 +291,8 @@ export default function DashboardPage() {
                     </button>
                     <button
                         onClick={handleToggleTimer}
-                        disabled={createEntryMutation.isPending}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-full sm:w-auto justify-center font-medium shadow-sm disabled:opacity-50 ${isWorking
+                        disabled={isActionPending}
+                        className={`${actionButtonClass} ${isWorking
                             ? "bg-amber-100 text-amber-700 hover:bg-amber-200"
                             : "bg-blue-600 text-white hover:bg-blue-700"
                             }`}
@@ -285,6 +305,26 @@ export default function DashboardPage() {
                             <Play className="w-4 h-4" />
                         )}
                         {isWorking ? "Clock Out" : "Clock In"}
+                    </button>
+                    <button
+                        onClick={() => markDayMutation.mutate("vacation")}
+                        disabled={isActionPending}
+                        className={`${actionButtonClass} bg-emerald-600 text-white hover:bg-emerald-700`}
+                        title="Mark selected date as vacation"
+                        aria-label="Vacation"
+                    >
+                        <Plane className="w-4 h-4" />
+                        <span className="hidden sm:inline">Vacation</span>
+                    </button>
+                    <button
+                        onClick={() => markDayMutation.mutate("sick-leave")}
+                        disabled={isActionPending}
+                        className={`${actionButtonClass} bg-rose-600 text-white hover:bg-rose-700`}
+                        title="Mark selected date as sick leave"
+                        aria-label="Sick leave"
+                    >
+                        <Ambulance className="w-4 h-4" />
+                        <span className="hidden sm:inline">Sick</span>
                     </button>
                 </div>
             </div>
