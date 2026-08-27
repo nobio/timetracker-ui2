@@ -309,7 +309,7 @@ export default function DashboardPage() {
                     <button
                         onClick={() => markDayMutation.mutate("vacation")}
                         disabled={isActionPending}
-                        className={`${actionButtonClass} bg-emerald-600 text-white hover:bg-emerald-700`}
+                        className={`${actionButtonClass} bg-emerald-100 text-emerald-700 hover:bg-emerald-200`}
                         title="Mark selected date as vacation"
                         aria-label="Vacation"
                     >
@@ -319,7 +319,7 @@ export default function DashboardPage() {
                     <button
                         onClick={() => markDayMutation.mutate("sick-leave")}
                         disabled={isActionPending}
-                        className={`${actionButtonClass} bg-rose-600 text-white hover:bg-rose-700`}
+                        className={`${actionButtonClass} bg-rose-100 text-rose-700 hover:bg-rose-200`}
                         title="Mark selected date as sick leave"
                         aria-label="Sick leave"
                     >
