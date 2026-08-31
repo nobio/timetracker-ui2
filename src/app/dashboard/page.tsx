@@ -304,7 +304,7 @@ export default function DashboardPage() {
                         ) : (
                             <Play className="w-4 h-4" />
                         )}
-                        {isWorking ? "Clock Out" : "Clock In"}
+                        {isWorking ? "Out" : "In"}
                     </button>
                     <button
                         onClick={() => markDayMutation.mutate("vacation")}
