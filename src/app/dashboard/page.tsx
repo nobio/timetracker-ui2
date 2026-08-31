@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
-import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route, Plane, Ambulance } from "lucide-react";
+import { Clock, Play, PlaneLanding, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, PlaneTakeoff, TentTree, Ambulance } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -300,9 +300,9 @@ export default function DashboardPage() {
                         {createEntryMutation.isPending ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : isWorking ? (
-                            <Square className="w-4 h-4" />
+                            <PlaneTakeoff className="w-4 h-4" />
                         ) : (
-                            <Play className="w-4 h-4" />
+                            <PlaneLanding className="w-4 h-4" />
                         )}
                         {isWorking ? "Out" : "In"}
                     </button>
@@ -313,7 +313,7 @@ export default function DashboardPage() {
                         title="Mark selected date as vacation"
                         aria-label="Vacation"
                     >
-                        <Plane className="w-4 h-4" />
+                        <TentTree className="w-4 h-4" />
                         <span className="hidden sm:inline">Vacation</span>
                     </button>
                     <button
