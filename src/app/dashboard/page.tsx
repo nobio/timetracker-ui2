@@ -274,20 +274,20 @@ export default function DashboardPage() {
                             refetchStats();
                         }}
                         disabled={isFetchingEntries || isFetchingStats}
-                        className={`${actionButtonClass} bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700`}
+                        className={`${actionButtonClass} !w-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700`}
                         title="Reload data"
+                        aria-label="Reload data"
                     >
                         <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
-                        <span className="hidden sm:inline">Reload</span>
                     </button>
                     <button
                         onClick={() => setShowMapModal(true)}
                         disabled={!hasLocation}
-                        className={`${actionButtonClass} bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`${actionButtonClass} !w-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
                         title={hasLocation ? "Show locations on map" : "No location data for this date"}
+                        aria-label={hasLocation ? "Show locations on map" : "No location data for this date"}
                     >
                         <MapIcon className="w-4 h-4" />
-                        <span className="hidden sm:inline">Map</span>
                     </button>
                     <button
                         onClick={handleToggleTimer}
