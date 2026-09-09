@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
-import { Clock, Play, PlaneLanding, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, PlaneTakeoff, TentTree, Ambulance } from "lucide-react";
+import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route, Plane, Ambulance } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -292,7 +292,7 @@ export default function DashboardPage() {
                     <button
                         onClick={handleToggleTimer}
                         disabled={isActionPending}
-                        className={`${actionButtonClass} ${isWorking
+                        className={`${actionButtonClass} min-h-11 sm:min-w-32 px-4 text-base ${isWorking
                             ? "bg-amber-100 text-amber-700 hover:bg-amber-200"
                             : "bg-blue-600 text-white hover:bg-blue-700"
                             }`}
@@ -300,31 +300,11 @@ export default function DashboardPage() {
                         {createEntryMutation.isPending ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : isWorking ? (
-                            <PlaneTakeoff className="w-4 h-4" />
+                            <Square className="w-4 h-4" />
                         ) : (
-                            <PlaneLanding className="w-4 h-4" />
+                            <Play className="w-4 h-4" />
                         )}
-                        {isWorking ? "Out" : "In"}
-                    </button>
-                    <button
-                        onClick={() => markDayMutation.mutate("vacation")}
-                        disabled={isActionPending}
-                        className={`${actionButtonClass} bg-emerald-100 text-emerald-700 hover:bg-emerald-200`}
-                        title="Mark selected date as vacation"
-                        aria-label="Vacation"
-                    >
-                        <TentTree className="w-4 h-4" />
-                        <span className="hidden sm:inline">Vacation</span>
-                    </button>
-                    <button
-                        onClick={() => markDayMutation.mutate("sick-leave")}
-                        disabled={isActionPending}
-                        className={`${actionButtonClass} bg-rose-100 text-rose-700 hover:bg-rose-200`}
-                        title="Mark selected date as sick leave"
-                        aria-label="Sick leave"
-                    >
-                        <Ambulance className="w-4 h-4" />
-                        <span className="hidden sm:inline">Sick</span>
+                        {isWorking ? "Clock Out" : "Clock In"}
                     </button>
                 </div>
             </div>
@@ -526,6 +506,29 @@ export default function DashboardPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-end gap-2">
+                <button
+                    onClick={() => markDayMutation.mutate("vacation")}
+                    disabled={isActionPending}
+                    className={`${actionButtonClass} bg-emerald-600 text-white hover:bg-emerald-700`}
+                    title="Mark selected date as vacation"
+                    aria-label="Vacation"
+                >
+                    <Plane className="w-4 h-4" />
+                    <span className="hidden sm:inline">Vacation</span>
+                </button>
+                <button
+                    onClick={() => markDayMutation.mutate("sick-leave")}
+                    disabled={isActionPending}
+                    className={`${actionButtonClass} bg-rose-600 text-white hover:bg-rose-700`}
+                    title="Mark selected date as sick leave"
+                    aria-label="Sick leave"
+                >
+                    <Ambulance className="w-4 h-4" />
+                    <span className="hidden sm:inline">Sick</span>
+                </button>
             </div>
 
             {/* Delete Confirmation Modal */}
