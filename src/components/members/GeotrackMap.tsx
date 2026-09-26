@@ -55,7 +55,7 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
 
     if (validData.length === 0) {
         return (
-            <div className="flex items-center justify-center p-8 bg-slate-50 border border-slate-200 rounded-lg text-slate-500 h-[500px]">
+            <div className="flex items-center justify-center p-8 bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl text-slate-500 dark:text-slate-400 h-[500px] text-sm">
                 No valid geo tracking data available for this time period.
             </div>
         );
@@ -64,7 +64,7 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
     const defaultCenter = { lat: validData[0].latitude!, lng: validData[0].longitude! };
 
     return (
-        <div style={{ height: "500px", width: "100%", position: "relative" }} className="rounded-xl overflow-hidden border border-slate-200">
+        <div style={{ height: "500px", width: "100%", position: "relative" }} className="rounded-2xl overflow-hidden border border-slate-200/80 dark:border-slate-800 shadow-sm">
             <MapContainer
                 center={defaultCenter}
                 zoom={1}
@@ -111,12 +111,12 @@ export default function GeotrackMap({ data, showAccuracy }: GeotrackMapProps) {
             </MapContainer>
 
             {/* Map Legend */}
-            <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg border border-slate-200 z-[400] text-sm">
-                <div className="font-semibold mb-2 text-slate-800">Velocity (m/s)</div>
-                <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs text-slate-600 w-8 text-right">{minVelocity.toFixed(1)}</span>
-                    <div className="w-32 h-3 rounded-full bg-gradient-to-r from-[hsl(120,80%,45%)] to-[hsl(0,80%,45%)]"></div>
-                    <span className="text-xs text-slate-600 w-8">{maxVelocity.toFixed(1)}</span>
+            <div className="absolute bottom-4 right-4 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md p-3 rounded-xl shadow-lg border border-slate-200/80 dark:border-slate-800 z-[400] text-xs">
+                <div className="font-semibold mb-1.5 text-slate-800 dark:text-slate-200">Velocity (m/s)</div>
+                <div className="flex items-center gap-2">
+                    <span className="font-mono text-slate-600 dark:text-slate-400 w-7 text-right">{minVelocity.toFixed(1)}</span>
+                    <div className="w-28 sm:w-32 h-2.5 rounded-full bg-gradient-to-r from-[hsl(120,80%,45%)] to-[hsl(0,80%,45%)] shadow-inner"></div>
+                    <span className="font-mono text-slate-600 dark:text-slate-400 w-7">{maxVelocity.toFixed(1)}</span>
                 </div>
             </div>
         </div>

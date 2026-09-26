@@ -3,7 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { format, isSameDay, addDays, subDays } from "date-fns";
-import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route, Plane, Ambulance } from "lucide-react";
+import { Clock, Play, Square, Loader2, ChevronLeft, ChevronRight, Calendar as CalendarIcon, Trash2, Pencil, Map as MapIcon, X, RotateCw, Route, Plane, Ambulance, Briefcase, Coffee, CheckCircle2, AlertCircle } from "lucide-react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -210,14 +210,6 @@ export default function DashboardPage() {
         );
     }
 
-    if (entriesError) {
-        return (
-            <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 p-4 rounded-lg border border-red-200 dark:border-red-900/50">
-                Error loading entries. Please try again.
-            </div>
-        );
-    }
-
     // Filter entries for the selected date
     const entries = allEntries?.filter(entry =>
         isSameDay(new Date(entry.entry_date), selectedDate)
@@ -247,9 +239,7 @@ export default function DashboardPage() {
         createEntryMutation.mutate(isWorking ? "go" : "enter");
     };
 
-    const actionButtonClass = "flex h-9 items-center justify-center gap-1.5 rounded-lg px-2 font-medium shadow-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 w-[calc(50%-0.25rem)] sm:w-24";
     const isActionPending = createEntryMutation.isPending || markDayMutation.isPending;
-
     const isToday = isSameDay(selectedDate, new Date());
 
     return (
@@ -260,97 +250,179 @@ export default function DashboardPage() {
             onTouchEnd={handleTouchEnd}
             onTouchCancel={handleTouchEnd}
         >
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            {/* Top error banner if fetching fails, with Retry button */}
+            {entriesError && (
+                <div className="p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-rose-700 dark:text-rose-400">
+                    <div className="flex items-center gap-2.5">
+                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                        <span className="text-sm font-medium">Failed to load entries. Check your connection or try again.</span>
+                    </div>
+                    <button
+                        onClick={() => {
+                            refetchEntries();
+                            refetchStats();
+                        }}
+                        className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-rose-600 hover:bg-rose-700 text-white self-start sm:self-auto transition-colors cursor-pointer"
+                    >
+                        Retry
+                    </button>
+                </div>
+            )}
+
+            {/* Header & Action Controls */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Time Entries</h1>
-                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 sm:hidden">
-                        Pull down to refresh on mobile.
+                    <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">Time Entries</h1>
+                    <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                        Track and manage your daily working sessions and leaves
                     </p>
                 </div>
-                <div className="flex flex-wrap items-center justify-end gap-2 w-full sm:w-auto">
+
+                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                    {/* Mark Vacation & Sick Leave */}
+                    <button
+                        onClick={() => markDayMutation.mutate("vacation")}
+                        disabled={isActionPending}
+                        className="flex h-10 items-center justify-center gap-1.5 rounded-xl px-3 text-xs sm:text-sm font-medium border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+                        title="Mark selected date as vacation"
+                        aria-label="Vacation"
+                    >
+                        <Plane className="w-4 h-4" />
+                        <span>Vacation</span>
+                    </button>
+
+                    <button
+                        onClick={() => markDayMutation.mutate("sick-leave")}
+                        disabled={isActionPending}
+                        className="flex h-10 items-center justify-center gap-1.5 rounded-xl px-3 text-xs sm:text-sm font-medium border border-rose-200 dark:border-rose-800/60 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
+                        title="Mark selected date as sick leave"
+                        aria-label="Sick leave"
+                    >
+                        <Ambulance className="w-4 h-4" />
+                        <span>Sick</span>
+                    </button>
+
                     <button
                         onClick={() => {
                             refetchEntries();
                             refetchStats();
                         }}
                         disabled={isFetchingEntries || isFetchingStats}
-                        className={`${actionButtonClass} !w-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700`}
+                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
                         title="Reload data"
                         aria-label="Reload data"
                     >
                         <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
                     </button>
+
                     <button
                         onClick={() => setShowMapModal(true)}
                         disabled={!hasLocation}
-                        className={`${actionButtonClass} !w-12 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 ${!hasLocation ? "opacity-50 cursor-not-allowed" : ""}`}
+                        className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all ${!hasLocation ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
                         title={hasLocation ? "Show locations on map" : "No location data for this date"}
                         aria-label={hasLocation ? "Show locations on map" : "No location data for this date"}
                     >
                         <MapIcon className="w-4 h-4" />
                     </button>
+
+                    {/* Clock In / Out CTA */}
                     <button
                         onClick={handleToggleTimer}
                         disabled={isActionPending}
-                        className={`${actionButtonClass} min-h-11 sm:min-w-32 px-4 text-base ${isWorking
-                            ? "bg-amber-100 text-amber-700 hover:bg-amber-200"
-                            : "bg-blue-600 text-white hover:bg-blue-700"
-                            }`}
+                        className={`flex h-10 px-4 sm:px-5 items-center justify-center gap-2 rounded-xl text-sm font-semibold shadow-sm transition-all flex-1 sm:flex-initial cursor-pointer ${isWorking
+                            ? "bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-300/80 dark:border-amber-600/40 hover:bg-amber-500/25 active:scale-95"
+                            : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-blue-500/25 shadow-md active:scale-95"
+                            } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                         {createEntryMutation.isPending ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
                         ) : isWorking ? (
-                            <Square className="w-4 h-4" />
+                            <Square className="w-4 h-4 fill-current" />
                         ) : (
-                            <Play className="w-4 h-4" />
+                            <Play className="w-4 h-4 fill-current" />
                         )}
-                        {isWorking ? "Clock Out" : "Clock In"}
+                        <span>{isWorking ? "Clock Out" : "Clock In"}</span>
                     </button>
                 </div>
             </div>
 
             {/* Stats Overview Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Total (Gesamt)</p>
-                    <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">{formatMsToHoursMinutes(busyStats?.duration || 0)}</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total</span>
+                        <div className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                            <Clock className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
+                        {formatMsToHoursMinutes(busyStats?.duration || 0)}
+                    </div>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Gesamtzeit</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Work (Arbeit)</p>
-                    <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{formatMsToHoursMinutes(busyStats?.busytime || 0)}</p>
+
+                <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Work</span>
+                        <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
+                            <Briefcase className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400 tabular-nums">
+                        {formatMsToHoursMinutes(busyStats?.busytime || 0)}
+                    </div>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Arbeitszeit</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Pause</p>
-                    <p className="text-2xl font-bold text-amber-500 dark:text-amber-400">{formatMsToHoursMinutes(busyStats?.pause || 0)}</p>
+
+                <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Pause</span>
+                        <div className="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
+                            <Coffee className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-bold tracking-tight text-amber-500 dark:text-amber-400 tabular-nums">
+                        {formatMsToHoursMinutes(busyStats?.pause || 0)}
+                    </div>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Pausenzeit</p>
                 </div>
-                <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-center">
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">End (Predicted)</p>
-                    <p className="text-2xl font-bold text-slate-800 dark:text-slate-100">{predictedEnd}</p>
+
+                <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">End (Est.)</span>
+                        <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400">
+                            <CheckCircle2 className="w-4 h-4" />
+                        </div>
+                    </div>
+                    <div className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
+                        {predictedEnd}
+                    </div>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Vorhersage Feierabend</p>
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden transition-colors">
                 {/* Date Navigation Header */}
-                <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between">
+                <div className="p-3.5 sm:p-4 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-800/40 flex items-center justify-between">
                     <button
                         onClick={() => setSelectedDate(prev => subDays(prev, 1))}
-                        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 rounded-xl transition-colors cursor-pointer"
+                        aria-label="Previous day"
                     >
                         <ChevronLeft className="w-5 h-5" />
                     </button>
 
-                    <div className="flex items-center gap-3 font-medium text-slate-700 dark:text-slate-200">
+                    <div className="flex items-center gap-2 sm:gap-3 font-semibold text-slate-800 dark:text-slate-100">
                         <div
-                            className="relative p-2 -m-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors cursor-pointer group"
+                            className="relative p-2 rounded-xl hover:bg-slate-200/60 dark:hover:bg-slate-700/60 transition-colors cursor-pointer group"
                             title="Select a specific date"
                         >
-                            <CalendarIcon className="w-5 h-5 text-blue-600 group-hover:text-blue-700 transition-colors" />
+                            <CalendarIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform" />
                             <input
                                 type="date"
                                 value={format(selectedDate, "yyyy-MM-dd")}
                                 onChange={(e) => {
                                     if (e.target.value) {
-                                        // Parse the local date string safely
                                         const [year, month, day] = e.target.value.split('-').map(Number);
                                         setSelectedDate(new Date(year, month - 1, day));
                                     }
@@ -358,18 +430,26 @@ export default function DashboardPage() {
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                             />
                         </div>
-                        <button
-                            onClick={() => setSelectedDate(new Date())}
-                            className={`transition-colors ${isToday ? "cursor-default text-slate-800 dark:text-slate-100" : "hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer"}`}
-                            title={isToday ? "" : "Return to Today"}
-                        >
-                            {isToday ? "Today" : format(selectedDate, "EEEE, MMMM d, yyyy")}
-                        </button>
+                        <span className="text-sm sm:text-base font-semibold">
+                            {isToday ? "Today, " : ""}
+                            <span className="sm:hidden">{format(selectedDate, "MMM d, yyyy")}</span>
+                            <span className="hidden sm:inline">{format(selectedDate, "EEEE, MMMM d, yyyy")}</span>
+                        </span>
+                        {!isToday && (
+                            <button
+                                onClick={() => setSelectedDate(new Date())}
+                                className="ml-1 px-2.5 py-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 border border-blue-200 dark:border-blue-900/50 rounded-lg transition-colors cursor-pointer"
+                                title="Jump to Today"
+                            >
+                                Today
+                            </button>
+                        )}
                     </div>
 
                     <button
                         onClick={() => setSelectedDate(prev => addDays(prev, 1))}
-                        className="p-2 rounded-lg transition-colors text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-700"
+                        className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-100 hover:bg-slate-200/60 dark:hover:bg-slate-700/60 rounded-xl transition-colors cursor-pointer"
+                        aria-label="Next day"
                     >
                         <ChevronRight className="w-5 h-5" />
                     </button>
@@ -381,24 +461,24 @@ export default function DashboardPage() {
                         <div key={entry._id || entry.entry_date} className="p-4 space-y-3">
                             <div className="flex justify-between items-start">
                                 <div>
-                                    <div className="font-medium text-slate-800 dark:text-slate-200">
+                                    <div className="font-semibold text-slate-900 dark:text-slate-100">
                                         {entry.direction === "enter" ? "Clocked In" : "Clocked Out"}
                                     </div>
-                                    <div className="text-sm text-slate-500 dark:text-slate-400">
+                                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                                         {format(new Date(entry.entry_date), "MMM d, yyyy")}
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end gap-2">
-                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${entry.direction === "enter"
-                                        ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400"
-                                        : "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400"
+                                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${entry.direction === "enter"
+                                        ? "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60"
+                                        : "bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60"
                                         }`}>
-                                        {entry.direction}
+                                        {entry.direction === "enter" ? "In" : "Out"}
                                     </span>
-                                    <div className="flex gap-1">
+                                    <div className="flex gap-1.5">
                                         <button
                                             onClick={() => triggerEdit(entry)}
-                                            className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-1 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                                            className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/40 cursor-pointer"
                                             title="Edit Entry"
                                         >
                                             <Pencil className="w-4 h-4" />
@@ -406,7 +486,7 @@ export default function DashboardPage() {
                                         <button
                                             onClick={() => triggerDelete(entry._id)}
                                             disabled={deleteEntryMutation.isPending}
-                                            className="text-red-400 hover:text-red-600 transition-colors p-1 -mr-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-50"
+                                            className="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 disabled:opacity-50 cursor-pointer"
                                             title="Delete Entry"
                                         >
                                             <Trash2 className="w-4 h-4" />
@@ -414,64 +494,66 @@ export default function DashboardPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400 text-sm">
-                                <Clock className="w-4 h-4" />
-                                {format(new Date(entry.entry_date), "HH:mm")}
+                            <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300 text-sm font-medium">
+                                <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                                <span className="tabular-nums font-semibold">{format(new Date(entry.entry_date), "HH:mm")}</span>
                             </div>
                         </div>
                     ))}
                     {entries.length === 0 && (
                         <div className="p-12 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 space-y-3">
-                            <div className="bg-slate-100 dark:bg-slate-800 p-3 rounded-full">
+                            <div className="bg-slate-100 dark:bg-slate-800 p-3.5 rounded-2xl">
                                 <CalendarIcon className="w-6 h-6 text-slate-400 dark:text-slate-500" />
                             </div>
-                            <p>No time entries for {isToday ? "today" : "this date"}.</p>
+                            <p className="text-sm font-medium">No time entries for {isToday ? "today" : "this date"}.</p>
                         </div>
                     )}
                 </div>
 
                 {/* Desktop View: Table */}
                 <div className="hidden md:block overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
-                        <thead className="bg-slate-50 dark:bg-slate-800/50">
+                    <table className="min-w-full divide-y divide-slate-200/80 dark:divide-slate-800">
+                        <thead className="bg-slate-50/80 dark:bg-slate-800/40">
                             <tr>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                     Date
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                     Time
                                 </th>
-                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                <th scope="col" className="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                                     Type
                                 </th>
-                                <th scope="col" className="relative px-6 py-3">
-                                    <span className="sr-only">Actions</span>
+                                <th scope="col" className="relative px-6 py-3.5 text-right text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                    Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200 dark:divide-slate-800">
+                        <tbody className="bg-white dark:bg-slate-900 divide-y divide-slate-200/80 dark:divide-slate-800">
                             {[...entries].sort((a, b) => new Date(b.entry_date).getTime() - new Date(a.entry_date).getTime()).map((entry) => (
-                                <tr key={entry._id || entry.entry_date} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-800 dark:text-slate-200 font-medium">
+                                <tr key={entry._id || entry.entry_date} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100 font-medium">
                                         {format(new Date(entry.entry_date), "MMM d, yyyy")}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400 flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
-                                        {format(new Date(entry.entry_date), "HH:mm")}
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-300">
+                                        <div className="flex items-center gap-2">
+                                            <Clock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
+                                            <span className="tabular-nums font-semibold">{format(new Date(entry.entry_date), "HH:mm")}</span>
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${entry.direction === "enter"
-                                            ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-400"
-                                            : "bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-400"
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ${entry.direction === "enter"
+                                            ? "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60"
+                                            : "bg-amber-100 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60"
                                             }`}>
-                                            {entry.direction}
+                                            {entry.direction === "enter" ? "Clocked In" : "Clocked Out"}
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div className="flex items-center justify-end gap-2">
+                                        <div className="flex items-center justify-end gap-1.5">
                                             <button
                                                 onClick={() => triggerEdit(entry)}
-                                                className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                                                className="text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/40 cursor-pointer"
                                                 title="Edit Entry"
                                             >
                                                 <Pencil className="w-4 h-4" />
@@ -479,7 +561,7 @@ export default function DashboardPage() {
                                             <button
                                                 onClick={() => triggerDelete(entry._id)}
                                                 disabled={deleteEntryMutation.isPending}
-                                                className="text-red-400 hover:text-red-600 transition-colors p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 disabled:opacity-50"
+                                                className="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 transition-colors p-2 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/40 disabled:opacity-50 cursor-pointer"
                                                 title="Delete Entry"
                                             >
                                                 <Trash2 className="w-4 h-4" />
@@ -492,12 +574,12 @@ export default function DashboardPage() {
                                 <tr>
                                     <td colSpan={4} className="px-6 py-16 text-center text-slate-500 dark:text-slate-400">
                                         <div className="flex flex-col items-center justify-center space-y-3">
-                                            <div className="bg-slate-50 dark:bg-slate-800 p-3 rounded-full">
-                                                <CalendarIcon className="w-8 h-8 text-slate-300 dark:text-slate-600" />
+                                            <div className="bg-slate-100 dark:bg-slate-800 p-3.5 rounded-2xl">
+                                                <CalendarIcon className="w-8 h-8 text-slate-400 dark:text-slate-500" />
                                             </div>
-                                            <p className="text-base text-slate-600 dark:text-slate-300">No time entries for {isToday ? "today" : "this date"}.</p>
+                                            <p className="text-base font-medium text-slate-700 dark:text-slate-300">No time entries for {isToday ? "today" : "this date"}.</p>
                                             {isToday && (
-                                                <p className="text-sm text-slate-500 dark:text-slate-400">Click the Start Timer button above to begin tracking.</p>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400">Click the Clock In button above to begin tracking.</p>
                                             )}
                                         </div>
                                     </td>
@@ -506,29 +588,6 @@ export default function DashboardPage() {
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <div className="flex flex-wrap items-center justify-end gap-2">
-                <button
-                    onClick={() => markDayMutation.mutate("vacation")}
-                    disabled={isActionPending}
-                    className={`${actionButtonClass} bg-green-300 text-black hover:bg-emerald-600 hover:text-white`}
-                    title="Mark selected date as vacation"
-                    aria-label="Vacation"
-                >
-                    <Plane className="w-4 h-4" />
-                    <span className="hidden sm:inline">Vacation</span>
-                </button>
-                <button
-                    onClick={() => markDayMutation.mutate("sick-leave")}
-                    disabled={isActionPending}
-                    className={`${actionButtonClass} bg-rose-300 text-black hover:bg-rose-600 hover:text-white`}
-                    title="Mark selected date as sick leave"
-                    aria-label="Sick leave"
-                >
-                    <Ambulance className="w-4 h-4" />
-                    <span className="hidden sm:inline">Sick</span>
-                </button>
             </div>
 
             {/* Delete Confirmation Modal */}

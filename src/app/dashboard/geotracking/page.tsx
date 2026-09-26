@@ -16,7 +16,7 @@ export default function GeotrackingPage() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800 p-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800/80 p-4 sm:p-6">
         <GeotrackTab />
       </div>
     </div>

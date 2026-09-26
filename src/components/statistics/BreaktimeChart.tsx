@@ -61,57 +61,60 @@ export function BreaktimeChart({ intervalMinute = 10 }: BreaktimeChartProps) {
     return (
         <div className="w-full space-y-6">
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className="bg-amber-50 p-3 rounded-lg border border-amber-100 shadow-sm">
-                    <p className="text-xs font-semibold text-amber-600 mb-0.5">Intervals Count</p>
-                    <p className="text-xl font-bold text-slate-800 tracking-tight">
+                <div className="bg-amber-50 dark:bg-amber-950/30 p-4 rounded-xl border border-amber-200 dark:border-amber-800/60 shadow-sm transition-colors">
+                    <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-1">Intervals Count</p>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight tabular-nums">
                         {totalBreaks} Items
                     </p>
                 </div>
             </div>
 
-            <div className="h-[400px] w-full mt-8">
+            <div className="h-[360px] sm:h-[400px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         data={chartData}
-                        margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
+                        margin={{ top: 20, right: 10, bottom: 40, left: 0 }}
                     >
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#94A3B8" strokeOpacity={0.25} />
                         <XAxis
                             dataKey="time"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748B', fontSize: 12 }}
+                            tick={{ fill: '#94A3B8', fontSize: 11 }}
                             tickFormatter={(val) => `${val}m`}
                             dy={10}
                         />
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748B', fontSize: 12 }}
-                            dx={-10}
+                            tick={{ fill: '#94A3B8', fontSize: 11 }}
+                            dx={-5}
                             allowDecimals={false}
                         />
                         <Tooltip
-                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                            cursor={{ fill: '#F1F5F9' }}
+                            contentStyle={{
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                borderColor: 'rgba(148, 163, 184, 0.2)',
+                                borderRadius: '12px',
+                                color: '#F8FAFC',
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                                fontSize: '12px',
+                                padding: '8px 12px'
+                            }}
+                            cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
                             labelFormatter={(label) => `Duration: ${label} mins`}
                             formatter={(value) => [Number(value ?? 0), 'Occurrences']}
                         />
                         <Bar
                             dataKey="breakTime"
                             name="Break Submitting Counts"
-                            radius={[4, 4, 0, 0]}
+                            radius={[6, 6, 0, 0]}
                             barSize={32}
-                        >
-                            {
-                                chartData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill="#F59E0B" />
-                                ))
-                            }
-                        </Bar>
+                            fill="#F59E0B"
+                        />
                     </BarChart>
                 </ResponsiveContainer>
-                <p className="text-center text-sm text-slate-500 mt-4">Break duration buckets (in minutes)</p>
+                <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-3">Break duration buckets (in minutes)</p>
             </div>
         </div>
     );

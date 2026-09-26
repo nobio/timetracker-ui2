@@ -88,28 +88,34 @@ export function ComeGoChart({ intervalMinute = 60 }: ComeGoChartProps) {
     return (
         <div className="w-full space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-100 flex items-center justify-between">
-                    <p className="font-medium text-emerald-800">Clock In Density</p>
-                    <div className="w-4 h-4 rounded bg-[#10B981]"></div>
+                <div className="bg-emerald-50 dark:bg-emerald-950/30 p-4 rounded-xl border border-emerald-200 dark:border-emerald-800/60 flex items-center justify-between shadow-sm transition-colors">
+                    <div>
+                        <p className="text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-semibold mb-0.5">Clock In Density</p>
+                        <p className="font-bold text-slate-900 dark:text-slate-100 text-lg">Morning arrivals</p>
+                    </div>
+                    <div className="w-4 h-4 rounded-full bg-[#10B981] shadow-sm shadow-emerald-500/50"></div>
                 </div>
-                <div className="bg-rose-50 p-4 rounded-lg border border-rose-100 flex items-center justify-between">
-                    <p className="font-medium text-rose-800">Clock Out Density</p>
-                    <div className="w-4 h-4 rounded bg-[#F43F5E]"></div>
+                <div className="bg-rose-50 dark:bg-rose-950/30 p-4 rounded-xl border border-rose-200 dark:border-rose-800/60 flex items-center justify-between shadow-sm transition-colors">
+                    <div>
+                        <p className="text-xs uppercase tracking-wider text-rose-600 dark:text-rose-400 font-semibold mb-0.5">Clock Out Density</p>
+                        <p className="font-bold text-slate-900 dark:text-slate-100 text-lg">Evening departures</p>
+                    </div>
+                    <div className="w-4 h-4 rounded-full bg-[#F43F5E] shadow-sm shadow-rose-500/50"></div>
                 </div>
             </div>
 
-            <div className="h-[400px] w-full mt-8">
+            <div className="h-[360px] sm:h-[400px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         data={mergedData}
-                        margin={{ top: 20, right: 20, bottom: 40, left: 20 }}
+                        margin={{ top: 20, right: 10, bottom: 40, left: 0 }}
                     >
-                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#94A3B8" strokeOpacity={0.25} />
                         <XAxis
                             dataKey="timeLabel"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748B', fontSize: 12 }}
+                            tick={{ fill: '#94A3B8', fontSize: 11 }}
                             angle={-45}
                             textAnchor="end"
                             dy={10}
@@ -117,15 +123,23 @@ export function ComeGoChart({ intervalMinute = 60 }: ComeGoChartProps) {
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#64748B', fontSize: 12 }}
-                            dx={-10}
+                            tick={{ fill: '#94A3B8', fontSize: 11 }}
+                            dx={-5}
                             allowDecimals={false}
                         />
                         <Tooltip
-                            contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                            cursor={{ fill: '#F1F5F9' }}
+                            contentStyle={{
+                                backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                borderColor: 'rgba(148, 163, 184, 0.2)',
+                                borderRadius: '12px',
+                                color: '#F8FAFC',
+                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                                fontSize: '12px',
+                                padding: '8px 12px'
+                            }}
+                            cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
                         />
-                        <Legend wrapperStyle={{ paddingTop: '20px' }} />
+                        <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '12px' }} />
                         <Bar
                             dataKey="enter"
                             name="Clock In (Come)"

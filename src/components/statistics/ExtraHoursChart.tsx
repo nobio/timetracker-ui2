@@ -124,58 +124,58 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
     return (
         <div className="w-full space-y-6">
             {/* Controls Row: Selected Period and Accumulate */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50/30 dark:hover:bg-blue-900/30">
+            <div className="flex flex-wrap items-center gap-3">
+                <label className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-200/80 dark:border-slate-700 shadow-sm transition-all hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/20 dark:hover:bg-blue-950/20">
                     <input
                         type="checkbox"
                         id="lastPeriod"
                         checked={showLastPeriod}
                         onChange={e => setShowLastPeriod(e.target.checked)}
-                        className="rounded border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 w-4 h-4 cursor-pointer"
+                        className="rounded-md border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 w-4 h-4 cursor-pointer"
                     />
-                    Selected {timeUnit.charAt(0).toUpperCase() + timeUnit.slice(1)}
+                    <span>Selected {timeUnit.charAt(0).toUpperCase() + timeUnit.slice(1)}</span>
                 </label>
 
-                <label className="flex items-center gap-2 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm transition-all hover:border-blue-200 dark:hover:border-blue-800 hover:bg-blue-50/30 dark:hover:bg-blue-900/30">
+                <label className="flex items-center gap-2 cursor-pointer text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-300 bg-white dark:bg-slate-800 px-3.5 py-2 rounded-xl border border-slate-200/80 dark:border-slate-700 shadow-sm transition-all hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50/20 dark:hover:bg-blue-950/20">
                     <input
                         type="checkbox"
                         id="accumulate"
                         checked={accumulate}
                         onChange={(e) => setAccumulate(e.target.checked)}
-                        className="rounded border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 w-4 h-4 cursor-pointer"
+                        className="rounded-md border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 w-4 h-4 cursor-pointer"
                     />
-                    Accumulate
+                    <span>Accumulate</span>
                 </label>
             </div>
 
             {/* Summary Boxes */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className={`p-3 rounded-lg border shadow-sm ${isPositiveBalance ? "bg-emerald-50 dark:bg-emerald-900/20 border-emerald-100 dark:border-emerald-900/50" : "bg-rose-50 dark:bg-rose-900/20 border-rose-100 dark:border-rose-900/50"}`}>
-                    <p className={`text-xs font-semibold mb-0.5 ${isPositiveBalance ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
+                <div className={`p-4 rounded-xl border shadow-sm transition-colors ${isPositiveBalance ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800/60" : "bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800/60"}`}>
+                    <p className={`text-xs font-semibold mb-1 uppercase tracking-wider ${isPositiveBalance ? "text-emerald-700 dark:text-emerald-400" : "text-rose-700 dark:text-rose-400"}`}>
                         {accumulate ? "Accumulated" : "Current Balance"}
                     </p>
-                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight tabular-nums">
                         {finalBalance > 0 ? "+" : ""}{Math.round(finalBalance * 10) / 10}h
                     </p>
                 </div>
-                <div className="p-3 rounded-lg border bg-orange-50 dark:bg-orange-900/20 border-orange-100 dark:border-orange-900/50 shadow-sm">
-                    <p className="text-xs font-semibold mb-0.5 text-orange-600 dark:text-orange-400">Total Extra</p>
-                    <p className="text-xl font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+                <div className="p-4 rounded-xl border bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800/60 shadow-sm transition-colors">
+                    <p className="text-xs font-semibold mb-1 text-amber-700 dark:text-amber-400 uppercase tracking-wider">Total Extra</p>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight tabular-nums">
                         {Math.round(totalExtraHours * 10) / 10}h
                     </p>
                 </div>
             </div>
 
-            <div className="h-[400px] w-full mt-8">
+            <div className="h-[360px] sm:h-[400px] w-full mt-4">
                 <ResponsiveContainer width="100%" height="100%">
                     {timeUnit !== "day" ? (
-                        <BarChart data={chartData} margin={{ top: 20, right: 20, bottom: 40, left: 20 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                        <BarChart data={chartData} margin={{ top: 20, right: 10, bottom: 40, left: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#94A3B8" strokeOpacity={0.25} />
                             <XAxis
                                 dataKey="date"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748B', fontSize: 12 }}
+                                tick={{ fill: '#94A3B8', fontSize: 11 }}
                                 angle={-45}
                                 textAnchor="end"
                                 dy={10}
@@ -183,34 +183,42 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748B', fontSize: 12 }}
-                                dx={-10}
+                                tick={{ fill: '#94A3B8', fontSize: 11 }}
+                                dx={-5}
                             />
                             <Tooltip
-                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                                cursor={{ stroke: '#F1F5F9', strokeWidth: 2 }}
-                                formatter={(value) => [Number(Math.round(Number(value) * 10) / 10), 'Overtime']}
+                                contentStyle={{
+                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                    borderColor: 'rgba(148, 163, 184, 0.2)',
+                                    borderRadius: '12px',
+                                    color: '#F8FAFC',
+                                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                                    fontSize: '12px',
+                                    padding: '8px 12px'
+                                }}
+                                cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
+                                formatter={(value) => [`${Math.round(Number(value) * 10) / 10} hrs`, 'Overtime']}
                             />
                             <Bar
                                 dataKey="extra_hour"
                                 name="Extra Hours"
-                                radius={[4, 4, 0, 0]}
-                                fill="#5d2bd4ff" />
+                                radius={[6, 6, 0, 0]}
+                                fill="#3B82F6" />
                         </BarChart>
                     ) : (
-                        <AreaChart data={chartData} margin={{ top: 20, right: 20, bottom: 40, left: 20 }}>
+                        <AreaChart data={chartData} margin={{ top: 20, right: 10, bottom: 40, left: 0 }}>
                             <defs>
                                 <linearGradient id="colorExtra" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.7} />
+                                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.05} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E2E8F0" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#94A3B8" strokeOpacity={0.25} />
                             <XAxis
                                 dataKey="date"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748B', fontSize: 12 }}
+                                tick={{ fill: '#94A3B8', fontSize: 11 }}
                                 angle={-45}
                                 textAnchor="end"
                                 dy={10}
@@ -218,20 +226,28 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748B', fontSize: 12 }}
-                                dx={-10}
+                                tick={{ fill: '#94A3B8', fontSize: 11 }}
+                                dx={-5}
                             />
                             <Tooltip
-                                contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                                cursor={{ stroke: '#F1F5F9', strokeWidth: 2 }}
-                                formatter={(value) => [Number(value ?? 0), 'Overtime Balance']}
+                                contentStyle={{
+                                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                                    borderColor: 'rgba(148, 163, 184, 0.2)',
+                                    borderRadius: '12px',
+                                    color: '#F8FAFC',
+                                    boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+                                    fontSize: '12px',
+                                    padding: '8px 12px'
+                                }}
+                                cursor={{ stroke: 'rgba(148, 163, 184, 0.3)', strokeWidth: 1 }}
+                                formatter={(value) => [`${Math.round(Number(value ?? 0) * 10) / 10} hrs`, 'Overtime Balance']}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="extra_hour"
                                 name="Overtime"
-                                stroke="#5d2bd4ff"
-                                strokeWidth={1}
+                                stroke="#3B82F6"
+                                strokeWidth={2.5}
                                 fillOpacity={1}
                                 fill="url(#colorExtra)"
                             />
