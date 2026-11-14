@@ -14,6 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  viewport: "width=device-width, initial-scale=1",
+
   title: "Timetracker 2.0",
   description: "High-performance time tracker application",
 };
@@ -29,7 +31,7 @@ export default function RootLayout({
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <div className="container mx-auto px-4"><Providers>{children}</Providers></div>
       </body>
     </html>
   );
