@@ -1,9 +1,11 @@
 "use client";
 
 import { apiClient } from "@/lib/api/client";
+import { clearSession, getRefreshToken, SESSION_EXPIRED_EVENT } from "@/lib/auth/session";
 import { Clock, Settings, LogOut, BarChart3, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export default function DashboardLayout({
@@ -14,17 +16,24 @@ export default function DashboardLayout({
     const router = useRouter();
     const pathname = usePathname();
 
+    // The API client clears the session when the refresh token is rejected;
+    // send the user back to the login page instead of leaving a dead dashboard.
+    useEffect(() => {
+        const handleSessionExpired = () => router.replace("/");
+        window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+        return () => window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+    }, [router]);
+
     const handleLogout = async () => {
         try {
             await apiClient.POST("/auth/logout", {
-                body: { token: localStorage.getItem("refreshToken") || "" }
+                body: { token: getRefreshToken() || "" }
             });
         } catch (e) {
             // ignore
         } finally {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            router.push("/");
+            clearSession();
+            router.replace("/");
         }
     };
 

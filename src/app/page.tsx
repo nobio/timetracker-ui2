@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
+import { storeTokens } from "@/lib/auth/session";
 import { Clock, Lock, User, Loader2, ArrowRight } from "lucide-react";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
@@ -22,9 +23,8 @@ export default function LoginPage() {
     },
     onSuccess: (data) => {
       if (data?.accessToken && data?.refreshToken) {
-        localStorage.setItem("accessToken", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        router.push("/dashboard");
+        storeTokens(data.accessToken, data.refreshToken);
+        router.replace("/dashboard");
       }
     },
   });
