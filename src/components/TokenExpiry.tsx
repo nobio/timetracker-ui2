@@ -98,7 +98,7 @@ export function TokenExpiry() {
     setRelative((prev) => ({ ...prev, [kind]: !prev[kind] }));
 
   return (
-    <div className="flex flex-row sm:flex-col gap-2">
+    <div className="flex flex-row md:flex-col gap-2">
       <TokenExpiryBadge
         label="Access token"
         icon={KeyRound}

@@ -91,8 +91,9 @@ export default function SettingsPage() {
             </div>
 
             {/* Appearance & Session Cards */}
-            <div className="flex flex-col sm:flex-row sm:items-stretch gap-4 max-w-3xl">
-                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 flex-1 transition-colors">
+            <div className="flex flex-col md:flex-row md:items-stretch gap-4 max-w-3xl">
+                {/* Hidden below md: the mobile header already shows the theme switcher */}
+                <div className="hidden md:flex bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 md:flex-row md:items-center justify-between gap-4 flex-1 transition-colors">
                     <div>
                         <h2 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100">Interface Theme</h2>
                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Customize your appearance preference (Light, Dark, or System)</p>
@@ -100,7 +101,7 @@ export default function SettingsPage() {
                     <ThemeSwitcher />
                 </div>
 
-                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 px-4 py-3 sm:px-5 sm:py-3 flex flex-col justify-center gap-2 sm:w-64 transition-colors">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 px-4 py-3 sm:px-5 sm:py-3 flex flex-col justify-center gap-2 md:w-64 transition-colors">
                     <h2 className="text-sm font-semibold text-slate-900 dark:text-slate-100">Session Tokens</h2>
                     <TokenExpiry />
                 </div>
