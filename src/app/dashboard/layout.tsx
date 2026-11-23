@@ -1,7 +1,7 @@
 "use client";
 
-import { apiClient } from "@/lib/api/client";
-import { clearSession, getRefreshToken, SESSION_EXPIRED_EVENT } from "@/lib/auth/session";
+import { apiClient, API_BASE_URL } from "@/lib/api/client";
+import { clearSession, getAccessToken, getRefreshToken, isAccessTokenExpired, refreshAccessToken, SESSION_EXPIRED_EVENT } from "@/lib/auth/session";
 import { Clock, Settings, LogOut, BarChart3, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -22,6 +22,23 @@ export default function DashboardLayout({
         const handleSessionExpired = () => router.replace("/");
         window.addEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
         return () => window.removeEventListener(SESSION_EXPIRED_EVENT, handleSessionExpired);
+    }, [router]);
+
+    // When the app returns from background (phone hibernate / app switch), the
+    // access token may have expired. Proactively refresh it on visibility change
+    // so pending queries don't all race to refresh or incorrectly expire the session.
+    useEffect(() => {
+        const handleVisibilityChange = async () => {
+            if (document.visibilityState !== "visible") return;
+            if (isAccessTokenExpired(getAccessToken())) {
+                const token = await refreshAccessToken(`${API_BASE_URL}/auth/token`);
+                if (!token) {
+                    router.replace("/");
+                }
+            }
+        };
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
     }, [router]);
 
     const handleLogout = async () => {
