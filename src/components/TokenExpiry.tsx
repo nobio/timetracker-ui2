@@ -7,6 +7,15 @@ import { getAccessToken, getRefreshToken, getTokenExpiry } from "@/lib/auth/sess
 
 type TokenKind = "access" | "refresh";
 
+function formatCountdown(expiry: number, now: number): string {
+  const diff = expiry - now;
+  if (diff <= 0) return "expired";
+  const totalSeconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+}
+
 function formatHoursUntil(expiry: number, now: number): string {
   const hours = (expiry - now) / 3_600_000;
   if (hours <= 0) return "expired";
@@ -21,6 +30,7 @@ function TokenExpiryBadge({
   now,
   showRelative,
   onToggle,
+  formatRelative = formatHoursUntil,
 }: {
   label: string;
   icon: typeof KeyRound;
@@ -28,6 +38,7 @@ function TokenExpiryBadge({
   now: number;
   showRelative: boolean;
   onToggle: () => void;
+  formatRelative?: (expiry: number, now: number) => string;
 }) {
   const expired = expiry !== null && expiry <= now;
 
@@ -49,7 +60,7 @@ function TokenExpiryBadge({
           {expiry === null
             ? "unknown"
             : showRelative
-              ? formatHoursUntil(expiry, now)
+              ? formatRelative(expiry, now)
               : format(expiry, "dd.MM.yy HH:mm")}
         </span>
       </span>
@@ -65,8 +76,8 @@ export function TokenExpiry() {
     refresh: null,
   });
   const [relative, setRelative] = useState<Record<TokenKind, boolean>>({
-    access: false,
-    refresh: false,
+    access: true,
+    refresh: true,
   });
 
   useEffect(() => {
@@ -106,6 +117,7 @@ export function TokenExpiry() {
         now={now}
         showRelative={relative.access}
         onToggle={() => toggle("access")}
+        formatRelative={formatCountdown}
       />
       <TokenExpiryBadge
         label="Refresh token"
