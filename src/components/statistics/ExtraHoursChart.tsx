@@ -175,7 +175,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                                 dataKey="date"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#94A3B8', fontSize: 11 }}
+                                tick={{ fill: '#94A3B8', fontSize: 12 }}
                                 angle={-45}
                                 textAnchor="end"
                                 dy={10}
@@ -183,7 +183,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#94A3B8', fontSize: 11 }}
+                                tick={{ fill: '#94A3B8', fontSize: 12 }}
                                 dx={-5}
                             />
                             <Tooltip
@@ -193,7 +193,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                                     borderRadius: '12px',
                                     color: '#F8FAFC',
                                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
-                                    fontSize: '12px',
+                                    fontSize: '13px',
                                     padding: '8px 12px'
                                 }}
                                 cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
@@ -218,7 +218,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                                 dataKey="date"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#94A3B8', fontSize: 11 }}
+                                tick={{ fill: '#94A3B8', fontSize: 12 }}
                                 angle={-45}
                                 textAnchor="end"
                                 dy={10}
@@ -226,7 +226,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#94A3B8', fontSize: 11 }}
+                                tick={{ fill: '#94A3B8', fontSize: 12 }}
                                 dx={-5}
                             />
                             <Tooltip
@@ -236,7 +236,7 @@ export function ExtraHoursChart({ timeUnit, accumulate, selectedDate, showLastPe
                                     borderRadius: '12px',
                                     color: '#F8FAFC',
                                     boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
-                                    fontSize: '12px',
+                                    fontSize: '13px',
                                     padding: '8px 12px'
                                 }}
                                 cursor={{ stroke: 'rgba(148, 163, 184, 0.3)', strokeWidth: 1 }}

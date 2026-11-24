@@ -19,6 +19,24 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Slightly enlarged type scale, tuned for readability */
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.4375rem;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.625rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.3125rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 2.125rem;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 2.375rem;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -52,6 +70,15 @@ body {
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: rgba(100, 116, 139, 0.8);
+}
+
+/* Keep form fields at 16px on small screens so iOS Safari does not zoom on focus */
+@media (max-width: 767px) {
+  input,
+  textarea,
+  select {
+    font-size: 1rem;
+  }
 }
 
 /* Hide scrollbar utility (used for tab overflow) */

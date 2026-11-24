@@ -15,7 +15,10 @@ export default function LoginPage() {
   const router = useRouter();
 
   const loginMutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({ username, password }: { username: string; password: string }) => {
+      if (!username || !password) {
+        throw new Error("Please enter your username and password");
+      }
       const { data, error } = await apiClient.POST("/auth/login", {
         body: { username, password },
       });
@@ -30,9 +33,18 @@ export default function LoginPage() {
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    loginMutation.mutate();
+    // Read the submitted values from the form itself: password managers and
+    // browsers autofill by setting `input.value` directly, which does not fire
+    // React's onChange, so the controlled state can still be empty here.
+    const formData = new FormData(e.currentTarget);
+    const submittedUsername = String(formData.get("username") ?? "").trim();
+    const submittedPassword = String(formData.get("password") ?? "");
+
+    setUsername(submittedUsername);
+    setPassword(submittedPassword);
+    loginMutation.mutate({ username: submittedUsername, password: submittedPassword });
   };
 
   const inputBase =
@@ -79,6 +91,7 @@ export default function LoginPage() {
                 </div>
                 <input
                   id="username"
+                  name="username"
                   type="text"
                   required
                   autoComplete="username"
@@ -104,6 +117,7 @@ export default function LoginPage() {
                 </div>
                 <input
                   id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
                   required
                   autoComplete="current-password"
@@ -138,7 +152,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loginMutation.isPending || !username || !password}
+              disabled={loginMutation.isPending}
               className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-500/30 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm mt-2"
             >
               {loginMutation.isPending ? (

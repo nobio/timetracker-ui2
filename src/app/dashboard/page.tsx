@@ -369,7 +369,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
                         {formatMsToHoursMinutes(busyStats?.duration || 0)}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Total time</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Total time</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -382,7 +382,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400 tabular-nums">
                         {formatMsToHoursMinutes(busyStats?.busytime || 0)}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Work time</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Work time</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -395,7 +395,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-amber-500 dark:text-amber-400 tabular-nums">
                         {formatMsToHoursMinutes(busyStats?.pause || 0)}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Break time</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Break time</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -408,7 +408,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
                         {predictedEnd}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Est. end time</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Est. end time</p>
                 </div>
             </div>
 

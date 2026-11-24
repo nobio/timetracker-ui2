@@ -98,13 +98,13 @@ export function AggregateChart({ timeUnit }: AggregateChartProps) {
                             dataKey="name"
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#94A3B8', fontSize: 11 }}
+                            tick={{ fill: '#94A3B8', fontSize: 12 }}
                             dy={10}
                         />
                         <YAxis
                             axisLine={false}
                             tickLine={false}
-                            tick={{ fill: '#94A3B8', fontSize: 11 }}
+                            tick={{ fill: '#94A3B8', fontSize: 12 }}
                             dx={-5}
                             domain={[6, 'dataMin']}
                         />
@@ -115,12 +115,12 @@ export function AggregateChart({ timeUnit }: AggregateChartProps) {
                                 borderRadius: '12px',
                                 color: '#F8FAFC',
                                 boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
-                                fontSize: '12px',
+                                fontSize: '13px',
                                 padding: '8px 12px'
                             }}
                             cursor={{ fill: 'rgba(148, 163, 184, 0.1)' }}
                         />
-                        <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '12px' }} />
+                        <Legend wrapperStyle={{ paddingTop: '20px', fontSize: '13px' }} />
                         <Bar
                             dataKey="actual"
                             name="Working Hours"

@@ -51,11 +51,11 @@ function TokenExpiryBadge({
     >
       <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${expired ? "text-rose-500" : "text-slate-500 dark:text-slate-400"}`} />
       <span className="flex min-w-0 flex-col leading-tight">
-        <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
+        <span className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
           {label}
         </span>
         <span
-          className={`whitespace-nowrap text-[11px] sm:text-xs font-semibold tabular-nums ${expired ? "text-rose-600 dark:text-rose-400" : "text-slate-700 dark:text-slate-200"}`}
+          className={`whitespace-nowrap text-xs sm:text-sm font-semibold tabular-nums ${expired ? "text-rose-600 dark:text-rose-400" : "text-slate-700 dark:text-slate-200"}`}
         >
           {expiry === null
             ? "unknown"
