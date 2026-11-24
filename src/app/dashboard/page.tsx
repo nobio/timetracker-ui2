@@ -11,7 +11,7 @@ const MapComponent = dynamic(() => import("@/components/Map"), {
     ssr: false,
 });
 import { components } from "@/lib/api/schema";
-import { useState, type TouchEvent } from "react";
+import { useState, useEffect, type TouchEvent } from "react";
 
 function formatMsToHoursMinutes(ms: number) {
     if (!ms || isNaN(ms)) return "00:00";
@@ -59,6 +59,18 @@ export default function DashboardPage() {
         setPullDistance(0);
         setIsPulling(false);
     };
+
+    // Close any open modal on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key !== "Escape") return;
+            if (entryToDelete) setEntryToDelete(null);
+            else if (entryToEdit) setEntryToEdit(null);
+            else if (showMapModal) setShowMapModal(false);
+        };
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [entryToDelete, entryToEdit, showMapModal]);
 
     const { data: allEntries, isLoading: isLoadingEntries, isFetching: isFetchingEntries, error: entriesError, refetch: refetchEntries } = useQuery({
         queryKey: ["entries"],
@@ -278,60 +290,14 @@ export default function DashboardPage() {
                     </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-                    {/* Mark Vacation & Sick Leave */}
-                    <button
-                        onClick={() => markDayMutation.mutate("vacation")}
-                        disabled={isActionPending}
-                        className="flex h-10 items-center justify-center gap-1.5 rounded-xl px-3 text-xs sm:text-sm font-medium border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
-                        title="Mark selected date as vacation"
-                        aria-label="Vacation"
-                    >
-                        <Plane className="w-4 h-4" />
-                        <span>Vacation</span>
-                    </button>
-
-                    <button
-                        onClick={() => markDayMutation.mutate("sick-leave")}
-                        disabled={isActionPending}
-                        className="flex h-10 items-center justify-center gap-1.5 rounded-xl px-3 text-xs sm:text-sm font-medium border border-rose-200 dark:border-rose-800/60 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
-                        title="Mark selected date as sick leave"
-                        aria-label="Sick leave"
-                    >
-                        <Ambulance className="w-4 h-4" />
-                        <span>Sick</span>
-                    </button>
-
-                    <button
-                        onClick={() => {
-                            refetchEntries();
-                            refetchStats();
-                        }}
-                        disabled={isFetchingEntries || isFetchingStats}
-                        className="flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all disabled:opacity-50 cursor-pointer"
-                        title="Reload data"
-                        aria-label="Reload data"
-                    >
-                        <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
-                    </button>
-
-                    <button
-                        onClick={() => setShowMapModal(true)}
-                        disabled={!hasLocation}
-                        className={`flex h-10 w-10 items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-sm transition-all ${!hasLocation ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
-                        title={hasLocation ? "Show locations on map" : "No location data for this date"}
-                        aria-label={hasLocation ? "Show locations on map" : "No location data for this date"}
-                    >
-                        <MapIcon className="w-4 h-4" />
-                    </button>
-
-                    {/* Clock In / Out CTA */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full lg:w-auto">
+                    {/* Primary CTA: Clock In / Out — full width on mobile, prominent on all sizes */}
                     <button
                         onClick={handleToggleTimer}
                         disabled={isActionPending}
-                        className={`flex h-10 px-4 sm:px-5 items-center justify-center gap-2 rounded-xl text-sm font-semibold shadow-sm transition-all flex-1 sm:flex-initial cursor-pointer ${isWorking
-                            ? "bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-300/80 dark:border-amber-600/40 hover:bg-amber-500/25 active:scale-95"
-                            : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white shadow-blue-500/25 shadow-md active:scale-95"
+                        className={`flex h-11 px-5 sm:px-6 items-center justify-center gap-2 rounded-xl text-sm font-semibold shadow-md transition-all cursor-pointer active:scale-[0.98] order-first sm:order-last ${isWorking
+                            ? "bg-amber-500 hover:bg-amber-600 text-white shadow-amber-400/30"
+                            : "bg-blue-600 hover:bg-blue-700 text-white shadow-blue-500/30"
                             } disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                         {createEntryMutation.isPending ? (
@@ -343,6 +309,51 @@ export default function DashboardPage() {
                         )}
                         <span>{isWorking ? "Clock Out" : "Clock In"}</span>
                     </button>
+
+                    {/* Secondary actions */}
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => markDayMutation.mutate("vacation")}
+                            disabled={isActionPending}
+                            className="flex h-11 flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-xl px-3 text-xs font-medium border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 transition-all disabled:opacity-50 cursor-pointer"
+                            title="Mark as vacation"
+                            aria-label="Mark as vacation"
+                        >
+                            <Plane className="w-4 h-4" />
+                            <span>Vacation</span>
+                        </button>
+
+                        <button
+                            onClick={() => markDayMutation.mutate("sick-leave")}
+                            disabled={isActionPending}
+                            className="flex h-11 flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-xl px-3 text-xs font-medium border border-rose-200 dark:border-rose-800/60 bg-rose-50 dark:bg-rose-950/30 text-rose-700 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/40 transition-all disabled:opacity-50 cursor-pointer"
+                            title="Mark as sick leave"
+                            aria-label="Mark as sick leave"
+                        >
+                            <Ambulance className="w-4 h-4" />
+                            <span>Sick</span>
+                        </button>
+
+                        <button
+                            onClick={() => { refetchEntries(); refetchStats(); }}
+                            disabled={isFetchingEntries || isFetchingStats}
+                            className="flex h-11 w-11 items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-all disabled:opacity-50 cursor-pointer"
+                            title="Reload"
+                            aria-label="Reload data"
+                        >
+                            <RotateCw className={`w-4 h-4 ${(isFetchingEntries || isFetchingStats) ? "animate-spin" : ""}`} />
+                        </button>
+
+                        <button
+                            onClick={() => setShowMapModal(true)}
+                            disabled={!hasLocation}
+                            className={`flex h-11 w-11 items-center justify-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-all ${!hasLocation ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
+                            title={hasLocation ? "View locations on map" : "No location data"}
+                            aria-label={hasLocation ? "View locations on map" : "No location data"}
+                        >
+                            <MapIcon className="w-4 h-4" />
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -358,7 +369,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
                         {formatMsToHoursMinutes(busyStats?.duration || 0)}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Gesamtzeit</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Total time</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -371,7 +382,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-blue-600 dark:text-blue-400 tabular-nums">
                         {formatMsToHoursMinutes(busyStats?.busytime || 0)}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Arbeitszeit</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Work time</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -384,7 +395,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-amber-500 dark:text-amber-400 tabular-nums">
                         {formatMsToHoursMinutes(busyStats?.pause || 0)}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Pausenzeit</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Break time</p>
                 </div>
 
                 <div className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 transition-colors">
@@ -397,7 +408,7 @@ export default function DashboardPage() {
                     <div className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 tabular-nums">
                         {predictedEnd}
                     </div>
-                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Vorhersage Feierabend</p>
+                    <p className="text-[11px] text-slate-400 dark:text-slate-500 mt-1">Est. end time</p>
                 </div>
             </div>
 

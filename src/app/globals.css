@@ -54,3 +54,12 @@ body {
   background: rgba(100, 116, 139, 0.8);
 }
 
+/* Hide scrollbar utility (used for tab overflow) */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+

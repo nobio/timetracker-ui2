@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { apiClient } from "@/lib/api/client";
 import { storeTokens } from "@/lib/auth/session";
-import { Clock, Lock, User, Loader2, ArrowRight } from "lucide-react";
+import { Clock, Lock, User, Loader2, ArrowRight, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const loginMutation = useMutation({
@@ -18,7 +19,7 @@ export default function LoginPage() {
       const { data, error } = await apiClient.POST("/auth/login", {
         body: { username, password },
       });
-      if (error) throw new Error(error.message || "Login failed");
+      if (error) throw new Error(error.message || "Invalid username or password");
       return data;
     },
     onSuccess: (data) => {
@@ -34,37 +35,42 @@ export default function LoginPage() {
     loginMutation.mutate();
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 sm:p-6 transition-colors relative overflow-hidden">
-      {/* Background decorative subtle glow */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+  const inputBase =
+    "w-full pl-10 pr-4 py-3 rounded-xl border bg-white dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 dark:focus:border-blue-500 transition-all text-sm outline-none";
+  const inputNormal = "border-slate-200 dark:border-slate-700";
+  const inputError = "border-rose-400 dark:border-rose-600 focus:ring-rose-400/20 focus:border-rose-500";
 
-      {/* Top right theme switcher */}
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 transition-colors relative overflow-hidden">
+      {/* Subtle background glows */}
+      <div className="absolute top-1/4 -left-48 w-[500px] h-[500px] bg-blue-400/8 dark:bg-blue-600/12 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-48 w-[500px] h-[500px] bg-indigo-400/8 dark:bg-indigo-600/12 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Top-right compact theme toggle */}
       <div className="absolute top-4 right-4 z-10">
-        <ThemeSwitcher />
+        <ThemeSwitcher variant="compact" />
       </div>
 
-      <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200/80 dark:border-slate-800 overflow-hidden relative z-10 transition-colors">
-        <div className="p-6 sm:p-8">
-          <div className="flex flex-col items-center mb-8">
-            <div className="bg-gradient-to-tr from-blue-600 to-indigo-600 p-3.5 rounded-2xl shadow-lg shadow-blue-500/25 mb-4">
-              <Clock className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
-              Timetracker 2.0
-            </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Sign in to manage and track your working hours
-            </p>
+      <div className="max-w-sm w-full relative z-10">
+        {/* Brand header — outside the card for a lighter feel */}
+        <div className="flex flex-col items-center mb-6">
+          <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-3.5 rounded-2xl shadow-lg shadow-blue-500/30 mb-4 ring-1 ring-blue-500/20">
+            <Clock className="w-7 h-7 text-white" strokeWidth={2.5} />
           </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+            Timetracker
+          </h1>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 text-center">
+            Sign in to track your working hours
+          </p>
+        </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label
-                htmlFor="username"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2"
-              >
+        {/* Login card */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-800 p-6 transition-colors">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+            {/* Username */}
+            <div className="space-y-1.5">
+              <label htmlFor="username" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Username
               </label>
               <div className="relative">
@@ -75,19 +81,21 @@ export default function LoginPage() {
                   id="username"
                   type="text"
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500 transition-all text-sm outline-none"
+                  autoComplete="username"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  className={`${inputBase} ${loginMutation.isError ? inputError : inputNormal}`}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter your username"
+                  placeholder="Your username"
+                  aria-invalid={loginMutation.isError}
                 />
               </div>
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 mb-2"
-              >
+            {/* Password */}
+            <div className="space-y-1.5">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
                 Password
               </label>
               <div className="relative">
@@ -96,35 +104,51 @@ export default function LoginPage() {
                 </div>
                 <input
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/60 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 dark:focus:border-blue-500 transition-all text-sm outline-none"
+                  autoComplete="current-password"
+                  className={`${inputBase} pr-11 ${loginMutation.isError ? inputError : inputNormal}`}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
+                  aria-invalid={loginMutation.isError}
                 />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  onClick={() => setShowPassword((s) => !s)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
+            {/* Error message — inline, not a banner */}
             {loginMutation.isError && (
-              <div className="p-3.5 bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 rounded-xl text-sm border border-rose-200 dark:border-rose-900/50">
-                {loginMutation.error.message}
+              <div
+                role="alert"
+                className="flex items-center gap-2 text-sm text-rose-600 dark:text-rose-400"
+              >
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{loginMutation.error.message}</span>
               </div>
             )}
 
             <button
               type="submit"
-              disabled={loginMutation.isPending}
-              className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+              disabled={loginMutation.isPending || !username || !password}
+              className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold py-3 px-4 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 focus:ring-4 focus:ring-blue-500/30 focus:outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm mt-2"
             >
               {loginMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Signing in...</span>
+                  Signing in…
                 </>
               ) : (
                 <>
-                  <span>Sign in</span>
+                  Sign in
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

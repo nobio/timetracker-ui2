@@ -63,100 +63,101 @@ export default function DashboardLayout({
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col md:flex-row transition-colors">
-            {/* Mobile nav header */}
+            {/* Mobile top header */}
             <header className="md:hidden bg-white/90 dark:bg-slate-900/90 border-b border-slate-200/80 dark:border-slate-800 px-4 py-3 flex justify-between items-center sticky top-0 z-40 shadow-sm backdrop-blur-md">
-                <Link href="/dashboard" className="flex items-center gap-2 text-blue-600 dark:text-blue-500 font-bold text-lg">
-                    <div className="bg-blue-600 dark:bg-blue-500 text-white p-1.5 rounded-lg shadow-sm">
-                        <Clock className="w-4 h-4" />
+                <Link href="/dashboard" className="flex items-center gap-2.5">
+                    <div className="bg-gradient-to-br from-blue-600 to-indigo-600 text-white p-1.5 rounded-lg shadow-sm shadow-blue-500/30">
+                        <Clock className="w-4 h-4" strokeWidth={2.5} />
                     </div>
-                    <span className="tracking-tight text-slate-900 dark:text-slate-100 font-bold">Timetracker</span>
+                    <span className="tracking-tight text-slate-900 dark:text-slate-100 font-bold text-base">Timetracker</span>
                 </Link>
-                <div className="flex items-center gap-1.5">
-                    <ThemeSwitcher />
+                <div className="flex items-center gap-1">
+                    <ThemeSwitcher variant="compact" />
                     <button
                         onClick={handleLogout}
-                        className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition-colors"
-                        title="Logout"
                         aria-label="Logout"
+                        className="flex items-center justify-center w-8 h-8 rounded-lg text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
                     >
-                        <LogOut className="w-5 h-5" />
+                        <LogOut className="w-4 h-4" />
                     </button>
                 </div>
             </header>
 
             {/* Sidebar Navigation (Desktop) */}
-            <aside
-                className="hidden md:flex md:relative md:translate-x-0 z-30 w-64 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 flex-col min-h-screen transition-colors"
-            >
-                <div className="p-5 border-b border-slate-200/80 dark:border-slate-800 flex items-center gap-3">
-                    <div className="bg-gradient-to-tr from-blue-600 to-indigo-600 p-2 rounded-xl text-white shadow-md shadow-blue-500/20">
-                        <Clock className="w-5 h-5" />
+            <aside className="hidden md:flex w-56 lg:w-64 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 flex-col min-h-screen transition-colors shrink-0">
+                <div className="p-4 lg:p-5 border-b border-slate-200/80 dark:border-slate-800 flex items-center gap-3">
+                    <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-2 rounded-xl text-white shadow-md shadow-blue-500/20 shrink-0">
+                        <Clock className="w-4 h-4" strokeWidth={2.5} />
                     </div>
-                    <div>
-                        <div className="font-bold text-base tracking-tight text-slate-900 dark:text-slate-100">Timetracker</div>
-                        <div className="text-[11px] font-medium text-slate-400 dark:text-slate-500">Workspace 2.0</div>
+                    <div className="min-w-0">
+                        <div className="font-bold text-sm tracking-tight text-slate-900 dark:text-slate-100">Timetracker</div>
+                        <div className="text-[11px] text-slate-400 dark:text-slate-500">v2.0</div>
                     </div>
                 </div>
 
-                <nav className="flex-1 p-3 space-y-1.5">
+                <nav className="flex-1 p-2.5 space-y-1">
                     {navItems.map((item) => {
                         const isActive = pathname === item.href;
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all font-medium text-sm ${isActive
-                                    ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 shadow-sm border border-blue-100 dark:border-blue-900/40 font-semibold"
-                                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100/70 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-200"
+                                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm ${isActive
+                                    ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-semibold border border-blue-100 dark:border-blue-900/40"
+                                    : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 font-medium"
                                     }`}
                             >
-                                <item.icon className={`w-4 h-4 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`} />
+                                <item.icon className={`w-4 h-4 shrink-0 ${isActive ? "text-blue-600 dark:text-blue-400" : "text-slate-400 dark:text-slate-500"}`} />
                                 {item.label}
                             </Link>
                         );
                     })}
                 </nav>
 
-                <div className="p-3 border-t border-slate-200/80 dark:border-slate-800 space-y-2">
-                    <div className="px-1 py-1">
-                        <div className="text-[11px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1.5 px-2">Theme</div>
+                <div className="p-2.5 border-t border-slate-200/80 dark:border-slate-800 space-y-1">
+                    <div className="px-3 py-2">
+                        <p className="text-[11px] font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">Theme</p>
                         <ThemeSwitcher />
                     </div>
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-3 px-3.5 py-2.5 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition-colors font-medium text-sm w-full"
+                        className="flex items-center gap-3 px-3 py-2.5 text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl transition-colors font-medium text-sm w-full"
                     >
                         <LogOut className="w-4 h-4" />
-                        Logout
+                        Sign out
                     </button>
                 </div>
             </aside>
 
             {/* Main Content Area */}
-            <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-y-auto w-full pb-24 md:pb-8">
-                <div className="max-w-7xl mx-auto w-full">{children}</div>
+            <main className="flex-1 min-w-0 p-4 sm:p-6 overflow-y-auto pb-28 md:pb-6">
+                <div className="max-w-6xl mx-auto w-full">{children}</div>
             </main>
 
             {/* Bottom Navigation (Mobile) */}
-            <nav className="md:hidden fixed bottom-4 left-3 right-3 h-16 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xl shadow-slate-900/10 dark:shadow-slate-950/50 z-40 flex items-center justify-around px-2 backdrop-blur-lg">
+            <nav
+                aria-label="Main navigation"
+                className="md:hidden fixed bottom-3 left-3 right-3 h-16 bg-white/95 dark:bg-slate-900/95 border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-lg shadow-slate-900/10 dark:shadow-slate-950/50 z-40 flex items-stretch backdrop-blur-lg"
+            >
                 {navItems.map((item) => {
                     const isActive = pathname === item.href;
                     return (
                         <Link
                             key={item.href}
                             href={item.href}
-                            className={`flex flex-col items-center justify-center flex-1 h-full rounded-xl transition-all ${isActive
-                                ? "text-blue-600 dark:text-blue-400 font-semibold"
-                                : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                            aria-current={isActive ? "page" : undefined}
+                            className={`flex flex-col items-center justify-center flex-1 gap-1 py-2 rounded-xl transition-all ${isActive
+                                ? "text-blue-600 dark:text-blue-400"
+                                : "text-slate-500 dark:text-slate-400"
                                 }`}
                         >
-                            <div className={`relative p-1.5 rounded-xl transition-all ${isActive
-                                ? "bg-blue-600 text-white shadow-md shadow-blue-500/25 scale-105"
+                            <div className={`flex items-center justify-center w-8 h-8 rounded-xl transition-all ${isActive
+                                ? "bg-blue-600 text-white shadow-sm shadow-blue-500/30"
                                 : ""
                                 }`}>
                                 <item.icon className="w-4 h-4" />
                             </div>
-                            <span className="text-[10px] mt-1 tracking-tight">
+                            <span className={`text-[10px] font-medium leading-none ${isActive ? "font-semibold" : ""}`}>
                                 {item.label}
                             </span>
                         </Link>
